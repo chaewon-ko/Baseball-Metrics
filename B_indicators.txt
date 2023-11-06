@@ -1,0 +1,44 @@
+* indicators that need explanation
+* reference(JAP): https://1point02.jp/op/gnav/glossary/gls_index.aspx?cp=101
+
+
+[기본]
+타수, 득점, 사구, 고의4구, 희타, 희비, 장타율, OPS, wOBA, wRC+, WAR, WPA
+* 지표의 정의에 대한 간단한 설명 필요?(예를 들어 볼넷, 사구, 고의4구의 차이 등)
+* user의 배경지식을 어디까지 안다고 가정해야할까? : 타수, 득점, 타점, 희타, 희비 등은 안다고 가정?
+
+[확장]
+* 타석 당 홈런 비율을 나타내는 HR% =(홈런)/(타석) 같은 경우는 간단한 설명만 필요해 보임. 추가적인 설명 페이지는 필요없고, 간단한 요약만 있어도 될 지표가 많아보임
+HR%, BB%, K%, BB/K
+IsoP, IsoD, BABIP, Spd, PSN, wRC, wRC/27, wRAA, 파크팩터 조정 지표(wOBA, wRC, wRC/27, wRAA)
+
+[가치]
+공격RAA(타격, 도루, 주루, 종합), 수비RAA(수비, 포지션, 종합), RAA-Adj, RAA, 대체Run, RAR, RPW, WAA, WARBat, WAROff, WAR*, dWAR
+
+[클러치]
+PA, 순수타점, RE24세부(타격, 주루), REW, WPA세부(타격, 주루, Plus, Minus), pLI, WPA/LI, Clutch, ph, phLI
+* 디테일한 설명 가능 여부 확인해야할 듯.
+
+[타석]
+P/PA, 배트적극성%, 2S후커트%/선구%, LSO%, 배팅찬스(스윙, W%)
+
+[타구1]
+FO/GO, InP%
+
+[타구2]
+
+[파워]
+XH: 장타
+
+[팀배팅1]
+
+[팀배팅2]
+
+[도루]
+
+[주루]
+RS%, 
+
+[구종가치],[구종구사]의 지표는 타자의 무엇을 의미하는지 잘 모르겠음
+
+

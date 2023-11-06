@@ -1,0 +1,41 @@
+* indicators that need explanation. 
+* 타자와 동일하게 상세 페이지까지는 필요 없어보이는 지표 많이 보임
+
+[기본]
+홀드, 실점, 자책, 보크, 폭투, ERA: 자세한 설명 필요?
+FIP, WHIP, ERA+, FIP+, WAR, WPA: (WAR, WPA 투수랑 타자랑 다른가? - 상세 설명 페이지 통합 가능?)
+
+[확장]
+PFR, BABIP, LOB%, 
+
+[방어율]
+RA, FIPRA, F-E, R-E, 파크팩터 조정(ERA, FIP, RA, FIPRA, ERA+, FIP+), kwERA
+
+[가치]
+RAA, 대체Run, RAR, WAA, fWAR, RA9-WAR
+
+[WP]
+RE24, REW, WPA세부, pLI, WPA/LI, Clutch
+
+[타석]
+SwStr%
+
+[타구1],[타구2]
+타자의 경우와 비슷
+
+[선발]
+QS, QS+, QK, TL, CW, 득점지원, 구원지원(BW, BNL, LIR, LIS), AGS, IP/GS, P/GS, 선발WAR, 선발WPA
+
+[구원]
+BLSV, BLH, BL+, R-Pnt, SVP, 터프 상황(홀/세/블론), IR, IS, Rel%, enLI, avLI, 구원WAR, 구원WPA
+
+[견제]
+
+[위기관리]
+득점%, 
+
+[구종가치]
+* 구종 설명 필요? 직구, 슬라, 커브, 체인지업, ...
+[구종구사]
+IZ, OZ, All, Zone%
+
