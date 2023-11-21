@@ -1,8 +1,13 @@
 import './App.css';
 import Header from './Header';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from './page/HomePage';
 import GamePage from './page/GamePage';
 import NotFound from './page/NotFound';
+import RecordPage from './page/RecordPage';
+import ComparisonPage from './page/ComparisonPage';
+import ExplainPage from './page/ExplainPage';
+
 
 function App() {
   return (
@@ -10,7 +15,11 @@ function App() {
       <BrowserRouter>
         <Header/>
         <Routes>
+          <Route path='/' element={<HomePage/>}></Route>
+          <Route path='/record' element={<RecordPage/>}></Route>
+          <Route path='/compare' element={<ComparisonPage/>}></Route>
           <Route path='/game' element={<GamePage/>}></Route>
+          <Route path='/explaination' element={<ExplainPage/>}></Route>
           <Route path='*' element={<NotFound/>}></Route>
         </Routes>
       </BrowserRouter>

@@ -7,10 +7,14 @@ const StyledDiv = styled.div`
 	height: 100px;	
 `
 
+const StyledLink = styled(Link)`
+
+`
+
 const Header = () => {
 	return (
 		<StyledDiv>
-			Header: Home / Record / Game / Comparison / Indicator Explanation
+			Header: <StyledLink to={"/"}>Home</StyledLink> / <Link to={"/record"}>Record</Link> / <Link to={"/game"}>Game</Link> / <Link to={"/compare"}>Comparison</Link> / <Link to={"/explaination"}>Indicator Explanation</Link>
 		</StyledDiv>
 	);
 };
