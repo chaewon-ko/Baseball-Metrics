@@ -1,11 +1,11 @@
 import React from 'react';
-import Inning from './playgame/Inning';
-import Bases from './playgame/Bases';
-import Playbuttons from './playgame/Playbuttons';
-import Nowplaying from './playgame/Nowplaying';
-import Sub from './playgame/Battingorder';
-import SBOcount from './playgame/SBOcount';
-import Tips from './playgame/Tips';
+import Inning from './playgame/Inning';
+import Bases from './playgame/Bases';
+import Playbuttons from './playgame/Playbuttons';
+import Nowplaying from './playgame/Nowplaying';
+import Sub from './playgame/Battingorder';
+import SBOcount from './playgame/SBOcount';
+import Tips from './playgame/Tips';
 import styled from 'styled-components';
 
 const GameBox = styled.div`
@@ -52,7 +52,8 @@ const Game = () => {
 				<GameBox2>
 					<Nowplaying/>
 					<div>
-						<Tips>현재 게임 이닝, 스트라이크/볼/아웃 카운트에 적합한 게임 팁을 출력</Tips>
+						<Tips theme={'nc'}>현재 게임 이닝, 스트라이크/볼/아웃 카운트에 적합한 게임 팁을 출력</Tips>
+						{/* header.js에서 선택한 테마 연동하는거 구현해야함 */}
 						<BaseSBO>
 							<Bases/>
 							<SBOcount/>

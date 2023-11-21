@@ -14,7 +14,7 @@ const RadarGraph = ({ player1, player2 }) => {
     labels: ['power', 'contact', 'batting eye', 'mental', 'speed', 'defence'],
     datasets: [
       {
-        label: '양의지',
+        label: '선수1',
         backgroundColor: 'rgba(179,181,198,0.2)',
         borderColor: 'rgba(179,181,198,1)',
         pointBackgroundColor: 'rgba(179,181,198,1)',
@@ -23,7 +23,7 @@ const RadarGraph = ({ player1, player2 }) => {
         data: player1,
       },
       {
-        label: '손아섭',
+        label: '선수2',
         backgroundColor: 'rgba(255,99,132,0.2)',
         borderColor: 'rgba(255,99,132,1)',
         pointBackgroundColor: 'rgba(255,99,132,1)',
