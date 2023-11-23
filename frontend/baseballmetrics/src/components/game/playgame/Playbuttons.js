@@ -28,7 +28,6 @@ function getRandomNumber() {
 const Playbuttons = ({sendData}) => {
 
 	const GG = e => {
-			console.log("button clicked")
 			const randomValue = getRandomNumber();
 			sendData(randomValue)
 	};

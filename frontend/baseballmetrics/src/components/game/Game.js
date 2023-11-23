@@ -3,7 +3,7 @@ import Inning from './playgame/Inning';
 import Bases from './playgame/Bases';
 import Playbuttons from './playgame/Playbuttons';
 import Nowplaying from './playgame/Nowplaying';
-import Sub from './playgame/Battingorder';
+import Battingorder from './playgame/Battingorder';
 import SBOcount from './playgame/SBOcount';
 import Tips from './playgame/Tips';
 import styled from 'styled-components';
@@ -42,12 +42,16 @@ const BaseSBO = styled.div`
 
 const Game = () => {
 		// 상태를 통해 데이터 관리
-		const [data, setData] = useState(null);
-	
+		const [data, setData] = useState(0);
+		const [count, setCount] = useState(1);
+
+
 		// 데이터를 설정하는 함수
 		const setBase = (newData) => {
 			setData(newData);
-		};	
+			setCount((prevCount) => (prevCount % 9) + 1);
+		};		
+
 
 	return (
 		<GameBox>
@@ -67,7 +71,7 @@ const Game = () => {
 						</BaseSBO>
 						<Playbuttons sendData={setBase}/>
 					</div>
-					<Sub/>
+					<Battingorder NowOrder={count}/>
 				</GameBox2>
 			</GridItem2>
 		</GameBox>
