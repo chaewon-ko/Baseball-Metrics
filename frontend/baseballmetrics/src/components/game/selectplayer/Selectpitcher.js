@@ -1,8 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import Papa from 'papaparse';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-const CsvReader = () => {
+const StyledTableContainer = styled.div`
+  overflow-x: auto;
+  max-width: 100%;
+`;
+
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+const StyledTh = styled.th`
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+// 수정된 부분: $isSelected prop 제거, 선택된 행에 배경색 적용
+const StyledTd = styled.td`
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  ${({ $isSelected }) =>
+    $isSelected
+      ? `
+    background-color: #4caf50;
+    color: white;
+  `
+      : ''}
+`;
+
+const StyledButton = styled.button`
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+`;
+
+const Selectpitcher = () => {
   const [tableData, setTableData] = useState(null);
+  const [selectedPitcher, setSelectedPitcher] = useState(null);
 
   useEffect(() => {
     fetchData('/data/pitcherGame.csv'); // 초기파일
@@ -28,34 +81,62 @@ const CsvReader = () => {
     }
   };
 
+  const handlePitcherSelect = (pitcher) => {
+    setSelectedPitcher(pitcher);
+  };
+
   return (
     <div>
       {tableData && (
-        <table border="1">
-          <thead>
-            <tr>
-              {Object.keys(tableData[0]).map((header, index) => (
-                <th key={index}>{header}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {Object.values(row).map((value, columnIndex) => (
-                  <td key={columnIndex}>{value}</td>
+        <>
+          <h2>Select the pitcher you want to compete against</h2>
+          {selectedPitcher && (
+            <div>
+              <p>Now Selected: {selectedPitcher.이름}</p>
+              {/* Link 컴포넌트 사용 */}
+              <Link to="/game/batter">
+                <StyledButton>Select</StyledButton>
+              </Link>
+            </div>
+          )}
+
+          <StyledTableContainer>
+            <StyledTable>
+              <thead>
+                <tr>
+                  <StyledTh>Select</StyledTh>
+                  {Object.keys(tableData[0]).map((header, index) => (
+                    <StyledTh key={index}>{header}</StyledTh>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {tableData.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {/* isSelected prop 대신 $isSelected 속성 사용 */}
+                    <StyledTd $isSelected={selectedPitcher === row}>
+                      <StyledButton onClick={() => handlePitcherSelect(row)}>
+                        Select
+                      </StyledButton>
+                    </StyledTd>
+                    {Object.values(row).map((value, columnIndex) => (
+                      // isSelected prop 대신 $isSelected 속성 사용
+                      <StyledTd
+                        key={columnIndex}
+                        $isSelected={selectedPitcher === row}
+                      >
+                        {value}
+                      </StyledTd>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              </tbody>
+            </StyledTable>
+          </StyledTableContainer>
+        </>
       )}
     </div>
   );
-};
-
-const Selectpitcher = () => {
-  return <CsvReader />;
 };
 
 export default Selectpitcher;

@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const DiamondContainer = styled.div`
-	margin-top: 50px;
-	margin-bottom: 50px;
+  margin-top: 50px;
+  margin-bottom: 50px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   transform: rotate(45deg);
@@ -15,27 +15,21 @@ const BaseSquare = styled.div`
   width: 50px;
   height: 50px;
   border: 1px solid white;
-	margin: 5px;
+  margin: 5px;
+  background-color: ${(props) => (props.isBase ? 'white' : 'transparent')};
 `;
 
-const BaseSquareFull = styled.div`
-  width: 50px;
-  height: 50px;
-  border: 1px solid white;
-	margin: 5px;
-	background-color: white;
-`;
+const Bases = ({ baseNumber }) => {
+  // Convert the decimal number to a binary string with leading zeros
+  const binaryString = baseNumber.toString(2).padStart(3, '0');
 
-// 변하는 함수 만들어야 함. 움직이고 깜빡여주면 될듯?
-
-const Bases = () => {
-	return (
-		<DiamondContainer>
-			<BaseSquare/>
-			<BaseSquare/>
-			<BaseSquareFull/>
-		</DiamondContainer>
-	);
+  return (
+    <DiamondContainer>
+      <BaseSquare isBase={binaryString[1] === '1'} />
+      <BaseSquare isBase={binaryString[2] === '1'} />
+      <BaseSquare isBase={binaryString[0] === '1'} />
+    </DiamondContainer>
+  );
 };
 
 export default Bases;

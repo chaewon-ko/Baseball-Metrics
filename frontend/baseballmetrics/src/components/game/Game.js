@@ -55,7 +55,7 @@ const Game = () => {
 						<Tips theme={'nc'}>현재 게임 이닝, 스트라이크/볼/아웃 카운트에 적합한 게임 팁을 출력</Tips>
 						{/* header.js에서 선택한 테마 연동하는거 구현해야함 */}
 						<BaseSBO>
-							<Bases/>
+							<Bases baseNumber={3}/>
 							<SBOcount/>
 						</BaseSBO>
 						<Playbuttons/>
