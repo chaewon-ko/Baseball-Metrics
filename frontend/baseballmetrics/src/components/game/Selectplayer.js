@@ -1,9 +1,12 @@
 import React from 'react';
+import Selectbatter from './selectplayer/Selectbatter';
+import Selectpitcher from './selectplayer/Selectpitcher';
 
 const Selectplayer = () => {
 	return (
 		<div>
-			게임 전 선수 선택
+			<Selectpitcher/>
+			<Selectbatter/>
 		</div>
 	);
 };
