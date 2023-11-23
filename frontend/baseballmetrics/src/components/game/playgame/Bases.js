@@ -16,18 +16,18 @@ const BaseSquare = styled.div`
   height: 50px;
   border: 1px solid white;
   margin: 5px;
-  background-color: ${(props) => (props.isBase ? 'white' : 'transparent')};
+  ${({ $isBase }) => $isBase && 'background-color: white;'}
 `;
 
 const Bases = ({ baseNumber }) => {
-  // Convert the decimal number to a binary string with leading zeros
-  const binaryString = baseNumber.toString(2).padStart(3, '0');
+  // baseNumber가 null이면 기본값을 사용
+  const binaryString = (baseNumber || 0).toString(2).padStart(3, '0');
 
   return (
     <DiamondContainer>
-      <BaseSquare isBase={binaryString[1] === '1'} />
-      <BaseSquare isBase={binaryString[2] === '1'} />
-      <BaseSquare isBase={binaryString[0] === '1'} />
+      <BaseSquare $isBase={binaryString[1] === '1'} />
+      <BaseSquare $isBase={binaryString[2] === '1'} />
+      <BaseSquare $isBase={binaryString[0] === '1'} />
     </DiamondContainer>
   );
 };
