@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const Button = styled.button`
 	color: white;
@@ -15,21 +16,32 @@ const Button = styled.button`
 `
 // 그저 시연을 위한 코드
 function getRandomNumber() {
-  // Math.random()은 0 이상 1 미만의 난수를 반환합니다.
-  // 0부터 7까지의 정수를 얻기 위해 8을 곱한 후 Math.floor()를 사용합니다.
-  const randomNumber = Math.floor(Math.random() * 8);
-  return randomNumber;
+	// Math.random()은 0 이상 1 미만의 난수를 반환합니다.
+	// 0부터 7까지의 정수를 얻기 위해 8을 곱한 후 Math.floor()를 사용합니다.
+	const randomNumber = Math.floor(Math.random() * 8);
+	return randomNumber;
 }
 
 // getRandomNumber 함수를 호출하여 랜덤 숫자 얻기
 
 
 
-const Playbuttons = ({sendData}) => {
+const Playbuttons = ({ sendData }) => {
 
 	const GG = e => {
-			const randomValue = getRandomNumber();
-			sendData(randomValue)
+		const randomValue = getRandomNumber();
+		sendData(randomValue)
+		axios.get('/play')
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			})
+			.then(function () {
+
+			});
+
 	};
 
 	return (

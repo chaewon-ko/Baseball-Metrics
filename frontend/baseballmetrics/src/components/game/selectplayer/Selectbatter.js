@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Papa from 'papaparse';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const StyledTableContainer = styled.div`
   overflow-x: auto;
@@ -83,6 +84,16 @@ const SelectBatter = () => {
 
   const handleBatterSelect = (batter) => {
     setSelectedBatter(batter);
+
+    axios.post('/selectplayer', {
+      "name": "양의지" //일단 양의지로 설정 눌렀을 때의 이름 넣으면 될 듯
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
   };
 
   return (

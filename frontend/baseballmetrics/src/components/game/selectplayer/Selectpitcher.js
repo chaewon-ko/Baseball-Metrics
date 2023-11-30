@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Papa from 'papaparse';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const StyledTableContainer = styled.div`
   overflow-x: auto;
@@ -53,6 +54,7 @@ const StyledButton = styled.button`
   cursor: pointer;
 `;
 
+
 const Selectpitcher = () => {
   const [tableData, setTableData] = useState(null);
   const [selectedPitcher, setSelectedPitcher] = useState(null);
@@ -83,6 +85,16 @@ const Selectpitcher = () => {
 
   const handlePitcherSelect = (pitcher) => {
     setSelectedPitcher(pitcher);
+
+    axios.post('/selectpitcher', {
+      "name": "페디" //일단 페디로 설정 눌렀을 때 이름 넣으면 될 듯
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
   };
 
   return (
