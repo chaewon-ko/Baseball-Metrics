@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Inning from './playgame/Inning';
 import Bases from './playgame/Bases';
 import Playbuttons from './playgame/Playbuttons';
@@ -42,7 +42,7 @@ const BaseSBO = styled.div`
 // 스트라이크 카운트 볼 카운트 우리가 사용을 안하는데 어떻게 처리?
 // 데이터베이스에 연결해서 선수들 정보도 가져와야 함 -> 이전 선택 페이지에서?
 
-const Game = () => {
+const Game = ({theme}) => {
 	// 상태를 통해 데이터 관리
 	const [data, setData] = useState(0);
 	const [count, setCount] = useState(1);
@@ -54,7 +54,9 @@ const Game = () => {
 		setCount((prevCount) => (prevCount % 9) + 1);
 	};
 
-
+	useEffect(() => {
+		console.log('theme: ',theme)
+	})
 
 	return (
 		<GameBox>
@@ -66,7 +68,7 @@ const Game = () => {
 				<GameBox2>
 					<Nowplaying />
 					<div>
-						<Tips theme={'ssg'}>현재 게임 이닝, 스트라이크/볼/아웃 카운트에 적합한 게임 팁을 출력</Tips>
+						<Tips theme={theme}>현재 게임 이닝, 스트라이크/볼/아웃 카운트에 적합한 게임 팁을 출력</Tips>
 						{/* header.js에서 선택한 테마 연동하는거 구현해야함 */}
 						<BaseSBO>
 							<Bases baseNumber={data} />

@@ -13,28 +13,33 @@ import Selectpitcher from './components/game/selectplayer/Selectpitcher';
 import Selectbatter from './components/game/selectplayer/Selectbatter';
 import Game from './components/game/Game';
 import Ranking from './components/game/Ranking';
+import { useEffect } from 'react';
 
 function App() {
 
-  const [currentTheme, setCurrentTheme] = useState(themes.light);
+  const [currentTheme, setCurrentTheme] = useState('light');
 
-  // 테마 변경 함수
-  const changeTheme = (selectedTheme) => {
-    setCurrentTheme(themes[selectedTheme]);
+  const handleTheme = (newTheme) => {
+    setCurrentTheme(newTheme);
   };
 
+  useEffect(() => {
+    console.log("App Theme test2: ", currentTheme);
+  }, [currentTheme]);
+  
+  // 테마 변경 함수
   return (
-    <ThemeProvider theme = {currentTheme}>
+    <ThemeProvider theme = {themes[currentTheme]}>
       <div className="App">
         <BrowserRouter>
-          <Header/>
+          <Header onThemeChange={handleTheme}/>
           <Routes>
             <Route path='/' element={<HomePage/>}></Route>
             <Route path='/record' element={<RecordPage/>}></Route>
             <Route path='/compare' element={<ComparisonPage/>}></Route>
             <Route path='/game' element={<Selectpitcher/>}></Route>
             <Route path='/game/batter' element={<Selectbatter/>}></Route>
-            <Route path='/game/play' element={<Game/>}></Route>
+            <Route path='/game/play' element={<Game theme={currentTheme}/>}></Route>
             <Route path='/game/rank' element={<Ranking/>}></Route>
             <Route path='/explaination' element={<ExplainPage/>}></Route>
             <Route path='*' element={<NotFound/>}></Route>

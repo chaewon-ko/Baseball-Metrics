@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { themes } from '../../../themes';
+import { useEffect } from 'react';
 
 const Tipbox = styled.div`
   border: 1px solid white;
@@ -13,7 +14,12 @@ const Tipbox = styled.div`
   color: ${(props) => props.theme.subColor};
 `;
 
+
 const Tips = ({ children, theme }) => {
+  useEffect(() =>{
+    console.log('tipTheme: ', theme)
+  })
+
   return (
     <ThemeProvider theme={themes[theme]}>
       <Tipbox>

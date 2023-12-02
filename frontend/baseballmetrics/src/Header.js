@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import { themes } from './themes';
@@ -27,13 +27,18 @@ const ThemeSelector = styled.select`
   margin-right: 10px;
 `;
 
-const Header = () => {
-  const [currentTheme, setCurrentTheme] = useState('ssg');
+const Header = ({onThemeChange}) => {
+  const [currentTheme, setCurrentTheme] = useState('light');
 
   const changeTheme = (selectedTheme) => {
     setCurrentTheme(selectedTheme);
+    onThemeChange(selectedTheme);
   };
+  
 
+  useEffect(() => {
+    console.log('HeaderTheme: ', currentTheme)
+  })
   return (
     <ThemeProvider theme={themes[currentTheme]}>
       <StyledDiv>
@@ -42,7 +47,7 @@ const Header = () => {
         <StyledLink to="/game">Game</StyledLink>
         <StyledLink to="/compare">Comparison</StyledLink>
         <StyledLink to="/explaination">Indicator Explanation</StyledLink>
-        <ThemeSelector onChange={(e) => changeTheme(e.target.value)}>
+        <ThemeSelector value={currentTheme} onChange={(e) => changeTheme(e.target.value)}>
           {Object.keys(themes).map((theme) => (
             <option key={theme} value={theme}>
               {theme}
