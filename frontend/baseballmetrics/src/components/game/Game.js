@@ -76,7 +76,7 @@ const Game = ({theme}) => {
 						</BaseSBO>
 						<Playbuttons sendData={setBase} />
 					</div>
-					<Battingorder NowOrder={count} />
+					<Battingorder NowOrder={count} theme={theme}/>
 				</GameBox2>
 			</GridItem2>
 		</GameBox>
