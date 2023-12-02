@@ -1,5 +1,6 @@
 import pandas as pd
 
+# 경로 위치 수정해야할 것 같긴 함.
 basic = pd.read_csv('../data/battersBasic.csv')
 clutch = pd.read_csv('../data/battersClutch.csv')
 exp = pd.read_csv('../data/battersExp.csv')
@@ -10,6 +11,8 @@ hit2 = pd.read_csv('../data/battersHit2.csv')
 team1 = pd.read_csv('../data/battersTeambat1.csv')
 team2 = pd.read_csv('../data/battersTeambat2.csv')
 power = pd.read_csv('../data/battersPower.csv')
+run = pd.read_csv('../data/battersRun.csv')
+steal = pd.read_csv('../data/battersSteal.csv')
 
 def evPower(name):
 	isop = float(power.loc[power["이름"]==name]["IsoP"].iloc[0])
