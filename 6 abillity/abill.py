@@ -23,23 +23,7 @@ def evPower(name):
 	spd = float(exp.loc[exp["이름"]==name]["Spd"].iloc[0])
 
 # 규정타석 50% 기준으로 min, max value 설정함
-	min_isop = 0.032
-	max_isop = 0.306
-
-	min_XHpH = 8.2
-	max_XHpH = 46.1
-
-	min_slg = 0.251
-	max_slg = 0.671
-# hr/g으로 바꿔야할듯. 부상 등으로 경기출장 적을수도
-	min_hr = 0
-	max_hr = 31
-
-	min_avg = 0.203
-	max_avg = 0.365
-
-	min_spd = 1.4
-	max_spd = 7.9
+	min_isop, max_isop, min_XHpH, max_XHpH, min_slg, max_slg, min_hr, max_hr, min_avg, max_avg, min_spd, max_spd = 0.032, 0.306, 8.2, 46.1, 0.251, 0.671, 0, 31, 0.203, 0.365, 1.4, 7.9
 
 	p1 = (isop-min_isop)/(max_isop-min_isop)
 	p2 = (XHpH-min_XHpH)/(max_XHpH-min_XHpH)
@@ -84,9 +68,65 @@ def evContact(name):
 
 		return 100 * p
 
+def evDefense(name):
+	RAAdef = float(value.loc[value["이름"]==name]["수비RAA_종합"].iloc[0])
+
+	maxRAAdef, minRAAdef = 15.6, -17.6
+	p = (RAAdef - minRAAdef)/(maxRAAdef - minRAAdef)
+
+	return 100 * p
+
+def evBE(name):
+	be = float(PA.loc[PA["이름"]==name]["2S후선구%"].iloc[0])
+	bb = float(basic.loc[basic["이름"]==name]["볼넷"].iloc[0])
+
+	maxbe, minbe = 51.0, 0.0
+	maxbb, minbb = 88, 0
+
+	p1 = (be - minbe)/(maxbe - minbe)
+	p2 = (bb - minbb)/(maxbb - minbb)
+
+	w1 = 5
+	w2 = 5
+
+	p = (w1*p1+w2*p2)/(w1+w2)
+
+	return 100 * p
+
+
+def evMental(name):
+	avg = float(basic.loc[basic["이름"]==name]["타율"].iloc[0])
+	isavg = float(clutch.loc[clutch["이름"]==name]["득점권타율"].iloc[0])
+	cl = float(clutch.loc[clutch["이름"]==name]["Clutch"].iloc[0])
+
+	maxavg, minavg = 1.000, 0
+	maxisavg, minisavg = 1.000, 0
+	diff = avg-isavg
+	maxdiff, mindiff = 1.000, -1.000
+	maxcl, mincl = 1.88, -1.26
+
+	p1 = (diff-mindiff)/(maxdiff-mindiff)
+	p2 = (cl - mincl)/(maxcl - mincl)
+
+	w1 = 3
+	w2 = 7
+
+	p = (w1*p1+w2*p2)/(w1+w2)
+
+	return 100 * p
+
+def evSpeed(name):
+	spd = float(exp.loc[exp["이름"]==name]["Spd"].iloc[0])
+
+	maxspd, minspd = 7.9, 0.1
+
+	p = (spd - minspd)/(maxspd-minspd)
+
+	return 100 * p
+
 
 # 상위 100명 타자 출력
 top_hr_player = basic.head(100)
 for name in top_hr_player['이름']:
-	print(name,'Power:' ,int(evPower(name)),' Contact', int(evContact(name)))
+	print(name,'Power:' ,int(evPower(name)),' Contact:', int(evContact(name)), ' Defense:', int(evDefense(name)), ' Batting Eyes:', int(evBE(name)), ' Mentality:', int(evMental(name)), ' Speed:', int(evSpeed(name)))
 
