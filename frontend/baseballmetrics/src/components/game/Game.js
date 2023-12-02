@@ -18,7 +18,9 @@ const GridItem1 = styled.div`
 	text-align: center;
 	background-color: black;
 	color: white;
-`
+`;
+
+
 const GridItem2 = styled.div`
 	padding: 16px;
 	border: 1px solid black;
@@ -38,6 +40,10 @@ const BaseSBO = styled.div`
 	justify-items: center;
 `
 
+const CustomHeading = styled.h3`
+  color: ${(props) => props.theme.subColor};
+`;
+
 // 현재 이닝, 베이스 상황, 아웃 상황 불러오기
 // 스트라이크 카운트 볼 카운트 우리가 사용을 안하는데 어떻게 처리?
 // 데이터베이스에 연결해서 선수들 정보도 가져와야 함 -> 이전 선택 페이지에서?
@@ -46,7 +52,6 @@ const Game = ({theme}) => {
 	// 상태를 통해 데이터 관리
 	const [data, setData] = useState(0);
 	const [count, setCount] = useState(1);
-
 
 	// 데이터를 설정하는 함수
 	const setBase = (newData) => {
@@ -61,7 +66,7 @@ const Game = ({theme}) => {
 	return (
 		<GameBox>
 			<GridItem1>
-				<h3>게임이 진행 중입니다.</h3>
+				<CustomHeading>게임이 진행 중입니다.</CustomHeading>
 				<Inning />
 			</GridItem1>
 			<GridItem2>
