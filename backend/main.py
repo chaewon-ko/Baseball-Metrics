@@ -16,7 +16,7 @@ app = FastAPI()
 ordered_player = []
 pinch_player =[]
 
-data = [0,0,0]
+data = [0,0,0,0]
 pitcher = ""
 
 class Player(BaseModel) :
@@ -27,6 +27,7 @@ class Result(BaseModel) :
     result : str
     out : int
     base : int
+    score : int
 
 
 
@@ -64,8 +65,23 @@ async def select_pitcher(player: Player):
      
 @app.get("/play")
 async def play():
+    if(data[2] == 3):
+        data[2] %= 3
+    
     res, data[1], data[2] = hit_K_BB(ordered_player[data[0]], pitcher, data[1], data[2])
     data[0] = (data[0] + 1) % 9
 
-    return {"result":res, "base":data[1],"out":data[2]}
+    data[1], data[3] = Score(data[1],data[3])
 
+    return {"result":res, "base":data[1],"out":data[2], "score":data[3]}
+
+@app.get("/bunt")
+async def bunt():
+    if(data[2] == 3):
+        data[2] %= 3
+    
+    res, data[1], data[2] = Bunt(ordered_player[data[0]], data[1], data[2])
+
+    data[1], data[3] = Score(data[1],data[3])
+
+    return {"result" : res, "base":data[1], "out":data[2], "score":data[3]}
