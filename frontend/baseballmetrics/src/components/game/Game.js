@@ -51,14 +51,13 @@ const CustomHeading = styled.h3`
 
 const Game = ({theme}) => {
 	// 상태를 통해 데이터 관리
-	const [data, setData] = useState(0);
-	const [count, setCount] = useState(1);
+  const [data, setData] = useState({ result: '', base: 0, out: 0 });
+  const [count, setCount] = useState(1);
 
-	// 데이터를 설정하는 함수
-	const setBase = (newData) => {
-		setData(newData);
-		setCount((prevCount) => (prevCount % 9) + 1);
-	};
+  const handleData = (newData) => {
+    setData(newData);
+    setCount((prevCount) => (prevCount % 9) + 1);
+  };
 
 	return (
 		<GameBox>
@@ -73,10 +72,10 @@ const Game = ({theme}) => {
 						<Tips theme={theme}>현재 게임 이닝, 스트라이크/볼/아웃 카운트에 적합한 게임 팁을 출력</Tips>
 						{/* header.js에서 선택한 테마 연동하는거 구현해야함 */}
 						<BaseSBO>
-							<Bases baseNumber={data} />
-							<SBOcount outs={1}/>
+							<Bases baseNumber={data.base} />
+							<SBOcount outs={data.out}/>
 						</BaseSBO>
-						<Playbuttons sendData={setBase} />
+						<Playbuttons sendData={handleData} />
 					</div>
 					<Battingorder NowOrder={count} theme={theme}/>
 				</GameBox2>
