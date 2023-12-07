@@ -38,6 +38,7 @@ const BaseSBO = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	justify-items: center;
+	align-items: center;
 `
 
 const CustomHeading = styled.h3`
@@ -73,7 +74,7 @@ const Game = ({theme}) => {
 						{/* header.js에서 선택한 테마 연동하는거 구현해야함 */}
 						<BaseSBO>
 							<Bases baseNumber={data} />
-							<SBOcount />
+							<SBOcount outs={1}/>
 						</BaseSBO>
 						<Playbuttons sendData={setBase} />
 					</div>

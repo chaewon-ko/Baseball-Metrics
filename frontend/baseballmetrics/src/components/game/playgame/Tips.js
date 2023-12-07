@@ -16,10 +16,6 @@ const Tipbox = styled.div`
 
 
 const Tips = ({ children, theme }) => {
-  useEffect(() =>{
-    console.log('tipTheme: ', theme)
-  })
-
   return (
     <ThemeProvider theme={themes[theme]}>
       <Tipbox>
