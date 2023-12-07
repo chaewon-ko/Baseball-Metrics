@@ -17,6 +17,20 @@ const GraphDiv3 = styled.div`
   grid-gap: 20px;
 `;
 
+const SelectPlayer = styled.div`
+  display: inline-block;
+  margin: 10px;
+`
+const Styledselect =  styled.select`
+  color: ${(props) => props.theme.mainColor};
+  background-color: ${(props) => props.theme.subTransparent};
+  width: 150px;
+  padding: 5px;
+  text-align: center;
+  border-radius: 1rem;
+
+`
+
 const playerList = [
   { id: 1, name: '선수1', abilities: [80, 80, 90, 60, 30, 90] },
   { id: 2, name: '선수2', abilities: [75, 85, 80, 75, 70, 95] },
@@ -40,39 +54,34 @@ const ComparisonPage = ({theme}) => {
   return (
     <div>
       <div>
-        <h2>선수 선택</h2>
-        <div>
-          <label>선수 1:</label>
-          <select onChange={(e) => handlePlayer1Select(playerList.find((p) => p.id === Number(e.target.value)))}>
+        <h2>Select Players to Compare</h2>
+        <SelectPlayer>
+          <label>Player 1: </label>
+          <Styledselect onChange={(e) => handlePlayer1Select(playerList.find((p) => p.id === Number(e.target.value)))}>
             {playerList.map((player) => (
               <option key={player.id} value={player.id}>
                 {player.name}
               </option>
             ))}
-          </select>
-        </div>
-        <div>
-          <label>선수 2:</label>
-          <select onChange={(e) => handlePlayer2Select(playerList.find((p) => p.id === Number(e.target.value)))}>
+          </Styledselect>
+        </SelectPlayer>
+        <SelectPlayer>
+          <label>Player 2: </label>
+          <Styledselect onChange={(e) => handlePlayer2Select(playerList.find((p) => p.id === Number(e.target.value)))}>
             {playerList.map((player) => (
               <option key={player.id} value={player.id}>
                 {player.name}
               </option>
             ))}
-          </select>
-        </div>
+          </Styledselect>
+        </SelectPlayer>
       </div>
       <h2>RadarGraph</h2>
-      <p>이 아래에 빈공간 어떻게 없애지</p>
-      <p>바 색상도 테마 설정해두면 좋을 듯!!</p>
       <GraphDiv>
         <RadarGraph theme={theme} player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
       </GraphDiv>
       <h2>Bar Graph</h2>
-      <p>DB 연결 후 수정</p>
-      <p>아래 zero-point의 위치를 중앙으로 고정시켜주는 기능이 없다고 함,,</p>
       <GraphDiv3>
-        {/* 기존 RadarGraph 대신 ComparisonBarGraph를 사용합니다. */}
         <BarGraph theme={theme} player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
         <BarGraph theme={theme} player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
         <BarGraph theme={theme} player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
