@@ -32,17 +32,13 @@ const StyledTd = styled.td`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  ${({ $isSelected }) =>
-    $isSelected
-      ? `
-    background-color: #4caf50;
-    color: white;
-  `
-      : ''}
+  background-color: ${({ $isSelected, theme }) =>
+    $isSelected ? theme.subColor : 'transparent'};
+  color: ${({ $isSelected }) => ($isSelected ? 'white' : 'inherit')};
 `;
 
 const StyledButton = styled.button`
-  background-color: #4caf50;
+  background-color: ${(props) => props.theme.mainColor};
   border: none;
   color: white;
   padding: 4px 8px;
@@ -54,7 +50,7 @@ const StyledButton = styled.button`
   cursor: pointer;
 `;
 
-const SelectBatter = () => {
+const SelectBatter = ({theme}) => {
   const [tableData, setTableData] = useState(null);
   const [selectedBatter, setSelectedBatter] = useState(null);
 

@@ -32,17 +32,14 @@ const StyledTd = styled.td`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  ${({ $isSelected }) =>
-    $isSelected
-      ? `
-    background-color: #4caf50;
-    color: white;
-  `
-      : ''}
+  background-color: ${({ $isSelected, theme }) =>
+    $isSelected ? theme.subColor : 'transparent'};
+  color: ${({ $isSelected }) => ($isSelected ? 'white' : 'inherit')};
 `;
 
+
 const StyledButton = styled.button`
-  background-color: #4caf50;
+  background-color: ${(props) => props.theme.mainColor};
   border: none;
   color: white;
   padding: 4px 8px;
@@ -55,7 +52,7 @@ const StyledButton = styled.button`
 `;
 
 
-const Selectpitcher = () => {
+const Selectpitcher = ({theme}) => {
   const [tableData, setTableData] = useState(null);
   const [selectedPitcher, setSelectedPitcher] = useState(null);
 
@@ -105,7 +102,6 @@ const Selectpitcher = () => {
           {selectedPitcher && (
             <div>
               <p>Now Selected: {selectedPitcher.이름}</p>
-              {/* Link 컴포넌트 사용 */}
               <Link to="/game/batter">
                 <StyledButton>Select</StyledButton>
               </Link>

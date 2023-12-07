@@ -22,10 +22,6 @@ function App() {
   const handleTheme = (newTheme) => {
     setCurrentTheme(newTheme);
   };
-
-  useEffect(() => {
-    console.log("App Theme test2: ", currentTheme);
-  }, [currentTheme]);
   
   // 테마 변경 함수
   return (
@@ -37,8 +33,8 @@ function App() {
             <Route path='/' element={<HomePage/>}></Route>
             <Route path='/record' element={<RecordPage/>}></Route>
             <Route path='/compare' element={<ComparisonPage/>}></Route>
-            <Route path='/game' element={<Selectpitcher/>}></Route>
-            <Route path='/game/batter' element={<Selectbatter/>}></Route>
+            <Route path='/game' element={<Selectpitcher theme={currentTheme}/>}></Route>
+            <Route path='/game/batter' element={<Selectbatter theme={currentTheme}/>}></Route>
             <Route path='/game/play' element={<Game theme={currentTheme}/>}></Route>
             <Route path='/game/rank' element={<Ranking/>}></Route>
             <Route path='/explaination' element={<ExplainPage/>}></Route>

@@ -35,10 +35,6 @@ const Header = ({onThemeChange}) => {
     onThemeChange(selectedTheme);
   };
   
-
-  useEffect(() => {
-    console.log('HeaderTheme: ', currentTheme)
-  })
   return (
     <ThemeProvider theme={themes[currentTheme]}>
       <StyledDiv>

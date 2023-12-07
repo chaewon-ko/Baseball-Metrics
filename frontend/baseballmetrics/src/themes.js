@@ -41,7 +41,7 @@ export const themes = {
 			subColor: '#FFD1B3',
 		},
 		light:{
-			mainColor: 'white',
-			subColor: 'gray',
+			mainColor: 'lightgray',
+			subColor: 'darkgray',
 		},
 }

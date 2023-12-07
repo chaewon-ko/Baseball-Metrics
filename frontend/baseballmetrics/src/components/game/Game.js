@@ -59,10 +59,6 @@ const Game = ({theme}) => {
 		setCount((prevCount) => (prevCount % 9) + 1);
 	};
 
-	useEffect(() => {
-		console.log('theme: ',theme)
-	})
-
 	return (
 		<GameBox>
 			<GridItem1>
