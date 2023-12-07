@@ -329,3 +329,23 @@ def groundBall(name,base,outcount,playerInfieldGround):
                 return 'GO', base, outcount
             
         
+
+def Bunt(name, base, outcount):
+    success = 850
+    selector = r.range(1,1001)
+    if(selector < success):
+        base = base << 1
+        outcount += 1
+        return 'Bunt+', base, outcount
+    else:
+        outcount += 1
+        return 'Buntx', base, outcount
+    
+
+
+def Score(base,score):
+    for i in range(4):
+        score += int(not(not(base & (1 << (3+i)))))
+        if(not(not(base & (1 << (3+i))))):
+            base ^= (1 << (3+i))
+    return base, score
