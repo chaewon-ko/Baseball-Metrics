@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Inning from './playgame/Inning';
 import Bases from './playgame/Bases';
 import Playbuttons from './playgame/Playbuttons';

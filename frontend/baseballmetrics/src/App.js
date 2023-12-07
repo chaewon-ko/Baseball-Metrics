@@ -13,7 +13,6 @@ import Selectpitcher from './components/game/selectplayer/Selectpitcher';
 import Selectbatter from './components/game/selectplayer/Selectbatter';
 import Game from './components/game/Game';
 import Ranking from './components/game/Ranking';
-import { useEffect } from 'react';
 
 function App() {
 
