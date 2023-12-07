@@ -81,18 +81,22 @@ const Selectpitcher = ({theme}) => {
   };
 
   const handlePitcherSelect = (pitcher) => {
+    const selectedPitcherName = pitcher.이름;
+  
     setSelectedPitcher(pitcher);
-
+  
     axios.post('/selectpitcher', {
-      "name": "페디" //일단 페디로 설정 눌렀을 때 이름 넣으면 될 듯
+      "name": selectedPitcherName
     })
       .then(function (response) {
         console.log(response);
+        // response: 200, OK 면 되는거죠?
       })
       .catch(function (error) {
         console.log(error);
-      })
+      });
   };
+  
 
   return (
     <div>
@@ -121,14 +125,12 @@ const Selectpitcher = ({theme}) => {
               <tbody>
                 {tableData.map((row, rowIndex) => (
                   <tr key={rowIndex}>
-                    {/* isSelected prop 대신 $isSelected 속성 사용 */}
                     <StyledTd $isSelected={selectedPitcher === row}>
                       <StyledButton onClick={() => handlePitcherSelect(row)}>
                         Select
                       </StyledButton>
                     </StyledTd>
                     {Object.values(row).map((value, columnIndex) => (
-                      // isSelected prop 대신 $isSelected 속성 사용
                       <StyledTd
                         key={columnIndex}
                         $isSelected={selectedPitcher === row}

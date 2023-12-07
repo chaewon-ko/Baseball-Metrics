@@ -24,7 +24,6 @@ const StyledTh = styled.th`
   text-overflow: ellipsis;
 `;
 
-// 수정된 부분: $isSelected prop 제거, 선택된 행에 배경색 적용
 const StyledTd = styled.td`
   border: 1px solid #dddddd;
   text-align: left;
@@ -50,12 +49,12 @@ const StyledButton = styled.button`
   cursor: pointer;
 `;
 
-const SelectBatter = ({theme}) => {
+const SelectBatter = ({ theme }) => {
   const [tableData, setTableData] = useState(null);
-  const [selectedBatter, setSelectedBatter] = useState(null);
+  const [selectedBatters, setSelectedBatters] = useState([]);
 
   useEffect(() => {
-    fetchData('/data/battersBasic.csv'); // 초기파일
+    fetchData('/data/battersBasic.csv');
   }, []);
 
   const fetchData = async (csvFilePath) => {
@@ -67,7 +66,11 @@ const SelectBatter = ({theme}) => {
         header: true,
         dynamicTyping: true,
         complete: function (result) {
-          setTableData(result.data);
+          const dataWithOrder = result.data.map((row, index) => ({
+            ...row,
+            order: index + 1,
+          }));
+          setTableData(dataWithOrder);
         },
         error: function (error) {
           console.error('Error parsing CSV:', error.message);
@@ -79,30 +82,91 @@ const SelectBatter = ({theme}) => {
   };
 
   const handleBatterSelect = (batter) => {
-    setSelectedBatter(batter);
+    const isAlreadySelected = selectedBatters.find(
+      (selected) => selected.이름 === batter.이름
+    );
 
-    axios.post('/selectplayer', {
-      "name": "양의지" //일단 양의지로 설정 눌렀을 때의 이름 넣으면 될 듯
-    })
+    if (isAlreadySelected) {
+      // 이미 선택된 선수를 선택하면 해당 선수를 제외
+      const newSelectedBatters = selectedBatters.filter(
+        (selected) => selected.이름 !== batter.이름
+      );
+
+      setSelectedBatters(newSelectedBatters);
+    } else {
+      if (selectedBatters.length < 15) {
+        const newSelectedBatters = [...selectedBatters];
+        newSelectedBatters.push(batter);
+        setSelectedBatters(newSelectedBatters);
+      } else {
+        alert('최대 15명까지만 선택할 수 있습니다.');
+      }
+    }
+  };
+
+  const changeOrder = (direction, index) => {
+    const newSelectedBatters = [...selectedBatters];
+
+    if (direction === 'up' && index > 0) {
+      [newSelectedBatters[index - 1], newSelectedBatters[index]] = [
+        newSelectedBatters[index],
+        newSelectedBatters[index - 1],
+      ];
+    } else if (direction === 'down' && index < newSelectedBatters.length - 1) {
+      [newSelectedBatters[index], newSelectedBatters[index + 1]] = [
+        newSelectedBatters[index + 1],
+        newSelectedBatters[index],
+      ];
+    }
+
+    setSelectedBatters(newSelectedBatters);
+  };
+
+  const handleSelect = () => {
+    const selectedNames = selectedBatters.map((batter) => batter.이름);
+
+    // 서버로 전송하는 부분 422 에러 뜨는 중
+    axios
+      .post('/selectplayer', {
+        players: selectedNames,
+      })
       .then(function (response) {
         console.log(response);
       })
       .catch(function (error) {
-        console.log(error);
-      })
+        console.error(error);
+      });
   };
 
   return (
     <div>
       {tableData && (
         <>
-          <h2>Select the batter you want to compete against</h2>
-          {selectedBatter && (
+          <h2>Select the batters you want to compete against</h2>
+          {selectedBatters.length > 0 && (
             <div>
-              <p>Now Selected: {selectedBatter.이름}</p>
-              {/* Link 컴포넌트 사용 */}
+              <p>Now Selected:</p>
+              <ol>
+                {selectedBatters.map((selectedBatter, index) => (
+                  <li key={index}>
+                    {selectedBatter.이름}
+                    <StyledButton
+                      onClick={() => changeOrder('up', index)}
+                      disabled={index === 0}
+                    >
+                      Up
+                    </StyledButton>
+                    <StyledButton
+                      onClick={() => changeOrder('down', index)}
+                      disabled={index === selectedBatters.length - 1}
+                    >
+                      Down
+                    </StyledButton>
+                  </li>
+                ))}
+              </ol>
               <Link to="/game/play">
-                <StyledButton>Select</StyledButton>
+                <StyledButton onClick={handleSelect}>Select</StyledButton>
               </Link>
             </div>
           )}
@@ -120,17 +184,15 @@ const SelectBatter = ({theme}) => {
               <tbody>
                 {tableData.map((row, rowIndex) => (
                   <tr key={rowIndex}>
-                    {/* isSelected prop 대신 $isSelected 속성 사용 */}
-                    <StyledTd $isSelected={selectedBatter === row}>
+                    <StyledTd $isSelected={selectedBatters.includes(row)}>
                       <StyledButton onClick={() => handleBatterSelect(row)}>
                         Select
                       </StyledButton>
                     </StyledTd>
                     {Object.values(row).map((value, columnIndex) => (
-                      // isSelected prop 대신 $isSelected 속성 사용
                       <StyledTd
                         key={columnIndex}
-                        $isSelected={selectedBatter === row}
+                        $isSelected={selectedBatters.includes(row)}
                       >
                         {value}
                       </StyledTd>
