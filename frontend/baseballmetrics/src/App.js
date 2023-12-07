@@ -31,7 +31,7 @@ function App() {
           <Routes>
             <Route path='/' element={<HomePage/>}></Route>
             <Route path='/record' element={<RecordPage/>}></Route>
-            <Route path='/compare' element={<ComparisonPage/>}></Route>
+            <Route path='/compare' element={<ComparisonPage theme={currentTheme}/>}></Route>
             <Route path='/game' element={<Selectpitcher theme={currentTheme}/>}></Route>
             <Route path='/game/batter' element={<Selectbatter theme={currentTheme}/>}></Route>
             <Route path='/game/play' element={<Game theme={currentTheme}/>}></Route>

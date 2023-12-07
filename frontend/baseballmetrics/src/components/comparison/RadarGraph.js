@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Radar } from 'react-chartjs-2';
+import { themes } from '../../themes';
 
-const RadarGraph = ({ player1, player2 }) => {
+const RadarGraph = ({ player1, player2, theme }) => {
 	const canvasRef = useRef(null);
 
 	useEffect(() => {
@@ -15,21 +16,21 @@ const RadarGraph = ({ player1, player2 }) => {
     datasets: [
       {
         label: '선수1',
-        backgroundColor: 'rgba(179,181,198,0.2)',
-        borderColor: 'rgba(179,181,198,1)',
-        pointBackgroundColor: 'rgba(179,181,198,1)',
+        backgroundColor: themes[theme].mainTransparent,
+        borderColor: themes[theme].mainColor,
+        pointBackgroundColor: themes[theme].mainColor,
         pointBorderColor: '#fff',
-        pointHoverBorderColor: 'rgba(179,181,198,1)',
+        pointHoverBorderColor: themes[theme].mainColor,
         data: player1,
       },
       {
         label: '선수2',
-        backgroundColor: 'rgba(255,99,132,0.2)',
-        borderColor: 'rgba(255,99,132,1)',
-        pointBackgroundColor: 'rgba(255,99,132,1)',
+        backgroundColor: themes[theme].subTransparent,
+        borderColor: themes[theme].subColor,
+        pointBackgroundColor: themes[theme].subColor,
         pointBorderColor: '#fff',
         pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(255,99,132,1)',
+        pointHoverBorderColor: themes[theme].subColor,
         data: player2,
       },
     ],

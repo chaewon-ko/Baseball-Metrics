@@ -1,7 +1,8 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
+import { themes } from '../../themes';
 
-const BarGraph = ({ player1, player2 }) => {
+const BarGraph = ({ player1, player2, theme}) => {
   const abilityLabels = ['Ability 1', 'Ability 2', 'Ability 3', 'Ability 4', 'Ability 5', 'Ability 6'];
 
   const dataDiff = player1.map((ability, index) => ability - player2[index]);
@@ -11,8 +12,8 @@ const BarGraph = ({ player1, player2 }) => {
     datasets: [
       {
         data: dataDiff,
-        backgroundColor: dataDiff.map(diff => (diff > 0 ? 'rgba(75, 192, 192, 0.2)' : 'rgba(255, 99, 132, 0.2)')),
-        borderColor: dataDiff.map(diff => (diff > 0 ? 'rgba(75, 192, 192, 1)' : 'rgba(255, 99, 132, 1)')),
+        backgroundColor: dataDiff.map(diff => (diff > 0 ? themes[theme].subColor : themes[theme].mainColor)),
+        borderColor: dataDiff.map(diff => (diff > 0 ? themes[theme].mainColor : themes[theme].subColor)),
         borderWidth: 1,
       },
     ],

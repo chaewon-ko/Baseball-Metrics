@@ -25,7 +25,7 @@ const playerList = [
 ];
 // 통신으로 받아와야할 선수들 데이터 선수 두명 + 해당 선수 구단/리그 평균(11개 데이터 이건 그냥 프론트에 박아놓을까?)
 
-const ComparisonPage = () => {
+const ComparisonPage = ({theme}) => {
   const [selectedPlayer1, setSelectedPlayer1] = useState(playerList[0]);
   const [selectedPlayer2, setSelectedPlayer2] = useState(playerList[1]);
 
@@ -66,16 +66,16 @@ const ComparisonPage = () => {
       <p>이 아래에 빈공간 어떻게 없애지</p>
       <p>바 색상도 테마 설정해두면 좋을 듯!!</p>
       <GraphDiv>
-        <RadarGraph player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
+        <RadarGraph theme={theme} player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
       </GraphDiv>
       <h2>Bar Graph</h2>
       <p>DB 연결 후 수정</p>
       <p>아래 zero-point의 위치를 중앙으로 고정시켜주는 기능이 없다고 함,,</p>
       <GraphDiv3>
         {/* 기존 RadarGraph 대신 ComparisonBarGraph를 사용합니다. */}
-        <BarGraph player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
-        <BarGraph player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
-        <BarGraph player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
+        <BarGraph theme={theme} player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
+        <BarGraph theme={theme} player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
+        <BarGraph theme={theme} player1={selectedPlayer1.abilities} player2={selectedPlayer2.abilities} />
       </GraphDiv3>
     </div>
   );
