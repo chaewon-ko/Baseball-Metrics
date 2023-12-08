@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List,Dict
-from page import *
 import sys, os
+from page import *
 sys.path.append(os. path.dirname(os.path. abspath(os.path.dirname(__file__))))
 from result import *
 
@@ -108,11 +108,11 @@ async def page(page : Page):
 
 @app.post("/teampage")
 async def teampage(page : Page):
-    Filterteam(page.sort)
+    FilterTeam(page.sort)
     return 1
 
 
 @app.post("/compare")
-async def abil()
+async def compare(compare:Compare)
 
 
