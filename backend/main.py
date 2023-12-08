@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import List,Dict
 import sys, os
 from page import *
+from compare import *
 sys.path.append(os. path.dirname(os.path. abspath(os.path.dirname(__file__))))
 from result import *
 
@@ -34,6 +35,10 @@ class Result(BaseModel) :
 class Page(BaseModel) :
     page : int
     sort : str
+
+
+class Team(BaseModel) :
+    team : str
 
 class Compare(BaseModel) :
     type : str
@@ -107,12 +112,13 @@ async def page(page : Page):
     return 1
 
 @app.post("/teampage")
-async def teampage(page : Page):
-    FilterTeam(page.sort)
+async def teampage(team : Team):
+    FilterTeam(team.team)
     return 1
 
 
 @app.post("/compare")
-async def compare(compare:Compare)
-
+async def compare(compare:Compare) :
+    geo1, geo2, bar1, bar2 = abilCompare(compare.type, compare.name1, compare.name2)
+    return {"geo1" : geo1, "geo2" : geo2, "bar1": bar1, "bar2" : bar2 }
 
