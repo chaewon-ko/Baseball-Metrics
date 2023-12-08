@@ -6,9 +6,10 @@ import pandas as pd
 # 파일 경로 수정
 pitcherData_all = pd.read_csv('../data/pitchersData/pitchersAll.csv')
 
-condition = pitcherData_all['이닝'] >= 25
+condition = pitcherData_all['이닝'] > 25
 
 pitcherData = pitcherData_all[condition]
+# 160? 162명?
 
 
 # 구위, 구속, 체력, 멘탈, 제구, 변화?
@@ -34,7 +35,7 @@ def movement(name):
 		return 100*p;
 
 
-top_hr_player = pitcherData.head(50)
+top_hr_player = pitcherData.head(162)
 count = 1
 for name in top_hr_player['이름']:
 	print(count, name, 'Movement: ', int(movement(name)))
