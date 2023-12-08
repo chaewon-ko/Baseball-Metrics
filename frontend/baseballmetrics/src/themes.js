@@ -61,7 +61,7 @@ export const themes = {
   },
   // 나머지 팀들도 동일하게 추가
   light: {
-    mainColor: 'lightgray',
+    mainColor: 'black',
     subColor: 'darkgray',
     mainTransparent: 'rgba(211, 211, 211, 0.2)',
     subTransparent: 'rgba(169, 169, 169, 0.2)',
