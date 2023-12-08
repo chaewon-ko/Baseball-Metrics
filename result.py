@@ -48,7 +48,7 @@ def hit_K_BB(name, pitcher, base, outcount):
     
     if (selector <= int(playerK)) :
         outcount += 1
-        return 'strikeout', base, outcount
+        return '삼진아웃', base, outcount
     elif (selector <= int(playerK + playerBB)) :
         if base&1 == 1:
             base += 1
@@ -57,7 +57,7 @@ def hit_K_BB(name, pitcher, base, outcount):
         elif base&1 == 1 and base&2 == 2 and base&4 == 4:
             base += 7
         base += 1
-        return 'BB', base, outcount
+        return '사사구', base, outcount
     else :
         return isHomerun(name,pitcher,base,outcount)
 
@@ -98,7 +98,7 @@ def isHomerun(name,pitcher,base,outcount):
     if(selector <= int(playerHrRatio)) :
         base = base << 4
         base += 8
-        return 'homerun' , base, outcount
+        return '홈런' , base, outcount
     elif(selector <= playerHrRatio.values[0] + playerInfieldRatio.values[0]):
         return infield(name,base,outcount)
     else:
@@ -136,7 +136,7 @@ def outfield(name,pitcher,base,outcount):
 def outfieldFO(name, base, outcount):
     if(outcount == 2):
         outcount += 1
-        return 'out',base,outcount
+        return '외야뜬공',base,outcount
     outcount += 1
     
     playerOutfieldCourse = float(hit2.loc[hit2["이름"] == name]['타구방향%_우'].values[0])
@@ -148,14 +148,14 @@ def outfieldFO(name, base, outcount):
     if(selector <= playerOutfieldCourse):
         course = 1
     
-    result = 'outFO+'
+    result = '외야뜬공,진루'
     
     if(base & 4  == 4):
         base += 4
-        result += '34'
+        result += '3루->홈'
     if((base & 2 == 2) and (course)):
         base += 2
-        result += '23'
+        result += '2루->3루'
         
     return result, base, outcount
     
@@ -215,26 +215,26 @@ def outfieldHit(name,pitcher, base,outcount):
         if(course == 1):
             base = base << 2
             base += 1
-            return '1B+', base, outcount
+            return '안타, 추가진루', base, outcount
         else:
             base = base << 1
             base += 1
-            return '1B', base, outcount
+            return '안타', base, outcount
         
     elif(selector <= int(player1BRatio + player2BRatio)):
         if(selector3 <= int(playerHitplus)):
             base = base << 3
             base += 2
-            return '2B+', base, outcount
+            return '2루타, 추가진루', base, outcount
         else:
             base = base << 2
             base += 2
-            return '2B', base, outcount
+            return '2루타', base, outcount
 
     else:
         base = base << 3
         base += 3
-        return '3B', base, outcount
+        return '3루타', base, outcount
 
 
 # In[15]:
@@ -256,7 +256,7 @@ def infield(name,base,outcount) :
     selector = r.randrange(1,1001)
     
     if(selector <= playerInfieldFORatio):
-        return 'FO', base,outcount
+        return '내야뜬공', base,outcount
     else:
         return groundBall(name,base,outcount,playerInfieldGround)
     
@@ -288,45 +288,45 @@ def groundBall(name,base,outcount,playerInfieldGround):
         if(selector <= int(playerInfieldHitRatio)):
             base = base<<1
             base += 1
-            return 'infieldHit',base,outcount
+            return '내야안타',base,outcount
         else :
             outcount += 1
-            return 'GO', base, outcount
+            return '내야땅볼', base, outcount
     elif base & 1 == 0:
         selector = r.randrange(1,1001)
         if(selector <= int(playerInfieldHitRatio)):
             base = base<<1
             base += 1
-            return 'infieldHit', base, outcount
+            return '내야안타', base, outcount
         else:
             selector2 = r.randrange(1,1001)
             if(selector2 <= int(playerOutPlusRatio)):
                 base = base << 1
                 outcount += 1
-                return 'O+', base, outcount
+                return '진루타', base, outcount
             else:
                 outcount += 1
-                return 'GO', base, outcount
+                return '내야땅볼', base, outcount
     else:
         selector = r.randrange(1,1001)
         if(selector <= int(playerInfieldHitRatio)):
             base = base<<1
             base += 1
-            return 'infieldHit', base, outcount
+            return '내야안타', base, outcount
         elif(selector <= int(playerInfieldHitRatio + playerDORatio)):
             base -= 1
             base = base<<1
             outcount += 2
-            return 'DoubleOut', base, outcount
+            return '병살', base, outcount
         else:
             selector2 = r.randrange(1,1001)
             if(selector2 <= int(playerOutPlusRatio)):
                 base = base << 1
                 outcount += 1
-                return 'O+', base, outcount
+                return '진루타', base, outcount
             else:
                 outcount += 1
-                return 'GO', base, outcount
+                return '내야땅볼', base, outcount
             
         
 

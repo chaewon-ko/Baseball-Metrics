@@ -35,6 +35,11 @@ class Page(BaseModel) :
     page : int
     sort : str
 
+class Compare(BaseModel) :
+    type : str
+    player1 : str
+    player2 : str
+
 
 origins = [
     "*"
@@ -105,3 +110,9 @@ async def page(page : Page):
 async def teampage(page : Page):
     Filterteam(page.sort)
     return 1
+
+
+@app.post("/compare")
+async def abil()
+
+
