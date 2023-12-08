@@ -2,9 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List,Dict
+from page import *
 import sys, os
 sys.path.append(os. path.dirname(os.path. abspath(os.path.dirname(__file__))))
 from result import *
+
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -29,6 +31,9 @@ class Result(BaseModel) :
     base : int
     score : int
 
+class Page(BaseModel) :
+    page : int
+    sort : str
 
 
 origins = [
@@ -53,10 +58,14 @@ async def main():
 @app.post("/selectplayer")
 async def select_player(player: Player):
     ordered_player.append(player.name)
+    for i in ordered_player:
+        print(i)
 
 @app.post("/selectpinch")
 async def select_pinch(player: Player):
     pinch_player.append(player.name)
+    for i in pinch_player:
+        print(i)
 
 @app.post("/selectpitcher")
 async def select_pitcher(player: Player):
@@ -85,3 +94,14 @@ async def bunt():
     data[1], data[3] = Score(data[1],data[3])
 
     return {"result" : res, "base":data[1], "out":data[2], "score":data[3]}
+
+
+@app.post("/page")
+async def page(page : Page):
+    PageData(page.page, page.sort)
+    return 1
+
+@app.post("/teampage")
+async def teampage(page : Page):
+    Filterteam(page.sort)
+    return 1
