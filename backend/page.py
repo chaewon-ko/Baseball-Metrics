@@ -11,8 +11,9 @@ def PageData(i,sort):
 
 def FilterTeam(team):
     all2 = all.dropna(subset=['팀/포지션'], how ='any', axis=0)
-    filtering = all2['팀/포지션'].str.contains(team)
+    filtering = all2['팀/포지션'].str.contains(team[0])
     all2 = all2[filtering]
+    all2.loc[:,["팀/포지션"]] = team
     all2 = all2.sort_values(by=['타율'], ascending=False)
     all2 = all2[["이름","팀/포지션","타율","볼넷","삼진","병살","장타","출루","득점권타율","phLI","FO/GO", "BB/K"]]
     all2.to_csv('../data/response/response.csv', index=False)
@@ -21,3 +22,4 @@ def FilterTeam(team):
 
 
 
+FilterTeam("두산")
