@@ -1,9 +1,5 @@
 import pandas as pd
 
-
-
-print(geo1)
-
 def abilCompare(type, name1, name2):
     if(type == "batter"):
         abil = pd.read_csv("../data/Abill/battersAbill.csv")
