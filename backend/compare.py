@@ -23,8 +23,3 @@ def abilCompare(type, name1, name2):
     return geo1[0], geo2[0], bar1[0], bar2[0]
 
 
-a,b,c,d = abilCompare("pitcher","페디","알칸타라")
-print(a)
-print(b)
-print(c)
-print(d)
