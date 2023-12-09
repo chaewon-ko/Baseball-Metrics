@@ -8,12 +8,14 @@ const StyledTableContainer = styled.div`
   overflow-x: auto;
   max-width: 100%;
 `;
+
 const StyledTable = styled.table`
   border-collapse: collapse;
   width: 90%;
   margin: auto;
   margin-top: 20px;
 `;
+
 const StyledTh = styled.th`
   border: 1px solid #dddddd;
   text-align: left;
@@ -23,9 +25,10 @@ const StyledTh = styled.th`
   text-overflow: ellipsis;
   cursor: pointer;
   text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
-  background-color: ${({ active, theme }) => 
+  background-color: ${({ active, theme }) =>
     active ? theme.subTransparent : 'transparent'};
 `;
+
 const StyledTd = styled.td`
   border: 1px solid #dddddd;
   text-align: left;
@@ -37,6 +40,7 @@ const StyledTd = styled.td`
     $isSelected ? theme.subColor : 'transparent'};
   color: ${({ $isSelected }) => ($isSelected ? 'white' : 'inherit')};
 `;
+
 const StyledButton = styled.button`
   background-color: ${(props) => props.theme.mainColor};
   border: none;
@@ -61,6 +65,19 @@ const PageNumber = styled.span`
   cursor: pointer;
   text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
 `;
+
+const teamList = [
+  'LG',
+  'KT',
+  'NC',
+  '두산',
+  'SSG',
+  'KIA',
+  '롯데',
+  '삼성',
+  '한화',
+  '키움',
+];
 
 const SelectBatter = ({ theme, onSelectBatters }) => {
   const [tableData, setTableData] = useState(null);
@@ -113,6 +130,51 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
   useEffect(() => {
     fetchData(currentPage, sortColumn || '타율');
   }, [currentPage, sortColumn]);
+
+  const fetchTeamData = async (team) => {
+    try {
+      const response = await axios.post('/teampage', {
+        team: team,
+      });
+
+      const csvData = response.data;
+
+      Papa.parse(csvData, {
+        header: true,
+        dynamicTyping: true,
+        complete: function (result) {
+          const dataWithoutEmptyRows = result.data.filter((row) =>
+            Object.values(row).some(
+              (value) => (value || '').toString().trim() !== ''
+            )
+          );
+
+          if (dataWithoutEmptyRows.length > 0) {
+            const lastRow =
+              dataWithoutEmptyRows[dataWithoutEmptyRows.length - 1];
+            if (
+              Object.values(lastRow).every(
+                (value) => (value || '').toString().trim() === ''
+              )
+            ) {
+              dataWithoutEmptyRows.pop();
+            }
+          }
+
+          setTableData(dataWithoutEmptyRows);
+        },
+        error: function (error) {
+          console.error('Error parsing CSV:', error.message);
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching CSV:', error.message);
+    }
+  };
+
+  const handleTeamFilter = (team) => {
+    fetchTeamData(team);
+  };
 
   const handleBatterSelect = (batter) => {
     const isAlreadySelected = selectedBatters.find(
@@ -197,7 +259,7 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
 
   return (
     <div>
-      {tableData && (
+      {tableData ? (
         <>
           <h2>Select the batters you want to compete against</h2>
           {selectedBatters.length > 0 && (
@@ -227,7 +289,13 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
               </Link>
             </div>
           )}
-
+          <div>
+            {teamList.map((team, index) => (
+              <StyledButton key={index} onClick={() => handleTeamFilter(team)}>
+                {team}
+              </StyledButton>
+            ))}
+          </div>
           <StyledTableContainer>
             <StyledTable>
               <thead>
@@ -278,6 +346,8 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
             ))}
           </Pagination>
         </>
+      ) : (
+        <p>Loading data...</p>
       )}
     </div>
   );
