@@ -152,5 +152,5 @@ async def teampage(team : Team):
 @app.post("/compare")
 async def compare(compare:Compare) :
     geo1, geo2, bar1, bar2 = abilCompare(compare.type, compare.player1, compare.player2)
-    return {"geo1" : geo1, "geo2" : geo2, "bar1": bar1, "bar2" : bar2 }
+    return {"geo1" : geo1, "geo2" : geo2, "bar1": bar1, "bar2" : bar2}
 
