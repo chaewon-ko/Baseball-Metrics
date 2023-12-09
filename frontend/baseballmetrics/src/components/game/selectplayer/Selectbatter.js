@@ -21,6 +21,10 @@ const StyledTh = styled.th`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+  text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
+  background-color: ${({ active, theme }) => 
+    active ? theme.subTransparent : 'transparent'};
 `;
 const StyledTd = styled.td`
   border: 1px solid #dddddd;
@@ -45,49 +49,70 @@ const StyledButton = styled.button`
   margin: 4px 2px;
   cursor: pointer;
 `;
+
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const PageNumber = styled.span`
+  margin: 0 5px;
+  cursor: pointer;
+  text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
+`;
+
 const SelectBatter = ({ theme, onSelectBatters }) => {
   const [tableData, setTableData] = useState(null);
   const [selectedBatters, setSelectedBatters] = useState([]);
-  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortColumn, setSortColumn] = useState(null);
+
   const fetchData = async (page, sort) => {
     try {
       const response = await axios.post('/page', {
         page: page,
         sort: sort,
       });
-  
+
       const csvData = response.data;
-  
+
       Papa.parse(csvData, {
         header: true,
         dynamicTyping: true,
         complete: function (result) {
-          // 제거할 빈 줄이 있는 경우에만 필터링
-          const dataWithoutEmptyRows = result.data.filter(row => Object.values(row).some(value => (value || '').toString().trim() !== ''));
-      
-          // 마지막 행이 빈 줄인 경우 제거
+          const dataWithoutEmptyRows = result.data.filter((row) =>
+            Object.values(row).some(
+              (value) => (value || '').toString().trim() !== ''
+            )
+          );
+
           if (dataWithoutEmptyRows.length > 0) {
-            const lastRow = dataWithoutEmptyRows[dataWithoutEmptyRows.length - 1];
-            if (Object.values(lastRow).every(value => (value || '').toString().trim() === '')) {
+            const lastRow =
+              dataWithoutEmptyRows[dataWithoutEmptyRows.length - 1];
+            if (
+              Object.values(lastRow).every(
+                (value) => (value || '').toString().trim() === ''
+              )
+            ) {
               dataWithoutEmptyRows.pop();
             }
           }
-      
+
           setTableData(dataWithoutEmptyRows);
         },
         error: function (error) {
           console.error('Error parsing CSV:', error.message);
         },
-      });           
+      });
     } catch (error) {
       console.error('Error fetching CSV:', error.message);
     }
   };
-  
+
   useEffect(() => {
-    fetchData(1, '타율');
-  }, []);
-  
+    fetchData(currentPage, sortColumn || '타율');
+  }, [currentPage, sortColumn]);
 
   const handleBatterSelect = (batter) => {
     const isAlreadySelected = selectedBatters.find(
@@ -95,7 +120,6 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
     );
 
     if (isAlreadySelected) {
-      // 이미 선택된 선수를 선택하면 해당 선수를 제외
       const newSelectedBatters = selectedBatters.filter(
         (selected) => selected.이름 !== batter.이름
       );
@@ -133,12 +157,12 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
   const handleSelect = () => {
     const selectedNames = selectedBatters.map((batter) => batter.이름);
     console.log(selectedNames);
-    // 서버로 전송하는 부분 422 에러 뜨는 중
+
     selectedNames.forEach(function (name, index) {
       if (index < 9) {
         axios
           .post('/selectplayer', {
-            "name": name
+            name: name,
           })
           .then(function (response) {
             console.log(response);
@@ -146,11 +170,10 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
           .catch(function (error) {
             console.error(error);
           });
-      }
-      else {
+      } else {
         axios
           .post('/selectpinch', {
-            "name": name
+            name: name,
           })
           .then(function (response) {
             console.log(response);
@@ -159,8 +182,17 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
             console.error(error);
           });
       }
-    })
+    });
+
     onSelectBatters(selectedBatters);
+  };
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleSort = (column) => {
+    setSortColumn(column);
   };
 
   return (
@@ -202,7 +234,13 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
                 <tr>
                   <StyledTh>Select</StyledTh>
                   {Object.keys(tableData[0]).map((header, index) => (
-                    <StyledTh key={index}>{header}</StyledTh>
+                    <StyledTh
+                      key={index}
+                      onClick={() => handleSort(header)}
+                      active={sortColumn === header}
+                    >
+                      {header}
+                    </StyledTh>
                   ))}
                 </tr>
               </thead>
@@ -227,6 +265,18 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
               </tbody>
             </StyledTable>
           </StyledTableContainer>
+
+          <Pagination>
+            {[...Array(8).keys()].map((page) => (
+              <PageNumber
+                key={page}
+                onClick={() => handlePageClick(page + 1)}
+                active={currentPage === page + 1}
+              >
+                {page + 1}
+              </PageNumber>
+            ))}
+          </Pagination>
         </>
       )}
     </div>
