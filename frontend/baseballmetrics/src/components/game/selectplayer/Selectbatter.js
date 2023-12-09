@@ -125,20 +125,35 @@ const SelectBatter = ({ theme }) => {
 
   const handleSelect = () => {
     const selectedNames = selectedBatters.map((batter) => batter.이름);
+    console.log(selectedNames);
+    // 서버로 전송하는 부분 422 에러 뜨는 중
+    selectedNames.forEach(function (name, index) {
+      if (index < 9) {
+        axios
+          .post('/selectplayer', {
+            "name": name
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
+      else {
+        axios
+          .post('/selectpinch', {
+            "name": name
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
+    })
 
-    // 서버로 전송하는 부분
-    axios
-      .post('/selectplayer', {
-        selectedPlayers: selectedNames,
-      })
-      .then(function (response) {
-        console.log(response);
-        // 성공적으로 서버에 전송된 경우 처리
-      })
-      .catch(function (error) {
-        console.error(error);
-        // 에러 발생 시 처리
-      });
   };
 
   return (
