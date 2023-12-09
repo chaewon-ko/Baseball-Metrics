@@ -3,6 +3,7 @@ import RadarGraph from '../components/comparison/RadarGraph';
 import styled from 'styled-components';
 import BarGraph from '../components/comparison/BarGraph';
 import { playerList } from '../players';
+import { playerPList } from '../playersP';
 import axios from 'axios';
 import { Radar } from 'react-chartjs-2';
 
@@ -10,16 +11,15 @@ const GraphDiv = styled.div`
   margin: 0 auto;
   width: 600px;
 `;
-
 const GraphDiv3 = styled.div`
   margin: 0 auto;
-  width: 30%;
+  width: 80%;
+  min-height: 100px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-content: center;
   grid-gap: 20px;
 `;
-
 const SelectPlayer = styled.div`
   display: inline-block;
   margin: 10px;
@@ -62,13 +62,9 @@ const SelectButton = styled.button`
   border: 1px solid ${(props) => props.theme.mainColor};
   margin: 5px;
 `;
-
-
 const Div1 = styled.div`
   margin-bottom: 10px;
 `
-
-
 const teamList = [
   {id: 1, name: '롯데'},
   {id: 2, name: '삼성'},
@@ -83,8 +79,8 @@ const teamList = [
 ]
 // 통신으로 받아와야할 선수들 데이터 선수 두명 + 해당 선수 구단/리그 평균(11개 데이터 이건 그냥 프론트에 박아놓을까?)
 const ComparisonPage = ({ theme }) => {
-  const [selectedPlayer1, setSelectedPlayer1] = useState(null);
-  const [selectedPlayer2, setSelectedPlayer2] = useState(null);
+  const [selectedPlayer1, setSelectedPlayer1] = useState('선수1');
+  const [selectedPlayer2, setSelectedPlayer2] = useState('선수2');
   const [selectedTeam1, setSelectedTeam1] = useState(teamList[0]);
   const [selectedTeam2, setSelectedTeam2] = useState(teamList[0]);
   const [filteredPlayers1, setFilteredPlayers1] = useState([]);
@@ -95,22 +91,26 @@ const ComparisonPage = ({ theme }) => {
 
   useEffect(() => {
     // Player 1을 위해 선택된 팀에 따라 선수 필터링
-    const playersForTeam1 = filteredPlayers(selectedTeam1.id);
+    const playersForTeam1 = filteredPlayers(selectedTeam1.id, type);
     setFilteredPlayers1(playersForTeam1);
-
+  
     // Player 2을 위해 선택된 팀에 따라 선수 필터링
-    const playersForTeam2 = filteredPlayers(selectedTeam2.id);
+    const playersForTeam2 = filteredPlayers(selectedTeam2.id, type);
     setFilteredPlayers2(playersForTeam2);
-  }, [selectedTeam1, selectedTeam2]);
+  }, [selectedTeam1, selectedTeam2, type]);  
 
-  const filteredPlayers = (teamId) => playerList.filter(player => player.teamId === teamId);
+  const filteredPlayers = (teamId, type) => {
+    const players = type === 'batter' ? playerList : playerPList;  
+    return players.filter(player => player.teamId === teamId);
+  };
+
   const handleTypePitcher = () =>{
     setType('pitcher')
   }
   const handleTypeBatter = () =>{
     setType('batter')
   }
-
+// 통신
   const handlePlayerSelect = async () => {
     try {
       const response = await axios.post('/compare', {
@@ -121,19 +121,19 @@ const ComparisonPage = ({ theme }) => {
 
       setPlayer1({
         name: selectedPlayer1.name,
-        geo: response.data.geo1,
+        geo: response.data.geo1.slice(1), // 첫 번째 요소 (이름)를 제거합니다.
         bar: response.data.bar1,
       });
 
       setPlayer2({
         name: selectedPlayer2.name,
-        geo: response.data.geo2,
+        geo: response.data.geo2.slice(1), // 첫 번째 요소 (이름)를 제거합니다.
         bar: response.data.bar2,
       });
     } catch (error) {
       console.error('Error fetching player data:', error.message);
     }
-  };
+};
   
   const handlePlayer1Select = (player) => {
     setSelectedPlayer1(player);
@@ -202,7 +202,7 @@ const ComparisonPage = ({ theme }) => {
       <StyledButton onClick={handlePlayerSelect} >COMPARE</StyledButton>
       <h2>RadarGraph</h2>
       <GraphDiv>
-        <RadarGraph theme={theme} player1={player1.geo} player2={player2.geo} />
+        <RadarGraph label1={selectedPlayer1.name} label2={selectedPlayer2.name} theme={theme} player1={player1.geo} player2={player2.geo} />
       </GraphDiv>
       <h2>Bar Graph</h2>
       <GraphDiv3>

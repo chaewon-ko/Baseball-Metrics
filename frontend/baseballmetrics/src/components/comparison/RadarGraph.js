@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Radar } from 'react-chartjs-2';
 import { themes } from '../../themes';
 
-const RadarGraph = ({ player1, player2, theme }) => {
+const RadarGraph = ({ label1 = '선수 1', label2 = '선수 2', player1, player2, theme }) => {
 	const canvasRef = useRef(null);
 
 	useEffect(() => {
@@ -15,7 +15,7 @@ const RadarGraph = ({ player1, player2, theme }) => {
     labels: ['power', 'contact', 'batting eye', 'mental', 'speed', 'defence'],
     datasets: [
       {
-        label: '선수1',
+        label: label1,
         backgroundColor: themes[theme].mainTransparent,
         borderColor: themes[theme].mainColor,
         pointBackgroundColor: themes[theme].mainColor,
@@ -24,7 +24,7 @@ const RadarGraph = ({ player1, player2, theme }) => {
         data: player1,
       },
       {
-        label: '선수2',
+        label: label2,
         backgroundColor: themes[theme].subTransparent,
         borderColor: themes[theme].subColor,
         pointBackgroundColor: themes[theme].subColor,

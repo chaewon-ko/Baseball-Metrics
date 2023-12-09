@@ -1,8 +1,5 @@
 // playerList.js
 
-const getRandomValue = () => Math.floor(Math.random() * 100);
-
-
 
 export const playerList = [
   { id: 1, name: '전준우', teamId: 1,  },
