@@ -17,6 +17,8 @@ const Styledstrong = styled.strong`
 `
 
 const SBOCount = ({ outs }) => {
+
+  
   const balls = 3;
   const strikes = 2;
   const maxOuts = 2;

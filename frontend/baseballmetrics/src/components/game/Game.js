@@ -53,11 +53,19 @@ const Game = ({theme}) => {
 	// 상태를 통해 데이터 관리
   const [data, setData] = useState({ result: '', base: 0, out: 0 });
   const [count, setCount] = useState(1);
+	const [showResult, setShowResult] = useState(true);
 
-  const handleData = (newData) => {
-    setData(newData);
-    setCount((prevCount) => (prevCount % 9) + 1);
-  };
+
+	const handleData = (newData) => {
+		setData(newData);
+		setCount((prevCount) => (prevCount % 9) + 1);
+		setShowResult(true);
+
+		// 2초 후에 결과 숨기기
+		setTimeout(() => {
+			setShowResult(false);
+		}, 2000);
+	};
 
 	return (
 		<GameBox>
@@ -69,7 +77,7 @@ const Game = ({theme}) => {
 				<GameBox2>
 					<Nowplaying />
 					<div>
-						<Tips theme={theme}>{data.result}</Tips>
+						<Tips theme={theme}>{showResult ? data.result : '해당 팁'}</Tips>
 						{/* header.js에서 선택한 테마 연동하는거 구현해야함 */}
 						<BaseSBO>
 							<Bases baseNumber={data.base} />
