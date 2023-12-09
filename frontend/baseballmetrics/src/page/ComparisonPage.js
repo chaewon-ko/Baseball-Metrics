@@ -207,8 +207,6 @@ const ComparisonPage = ({ theme }) => {
       <h2>Bar Graph</h2>
       <GraphDiv3>
         <BarGraph theme={theme} player1={player1.bar} player2={player2.bar} />
-        {/* <BarGraph theme={theme} player1={selectedPlayer1.bar} player2={selectedPlayer2.bar} />
-        <BarGraph theme={theme} player1={selectedPlayer1.bar} player2={selectedPlayer2.bar} /> */}
       </GraphDiv3>
     </div>
   );
