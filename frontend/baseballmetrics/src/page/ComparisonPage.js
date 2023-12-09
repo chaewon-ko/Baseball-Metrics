@@ -51,7 +51,23 @@ const StyledButton = styled.button`
   padding: 5px;
   width: 100px;
   border: 1px solid ${(props) => props.theme.mainColor};
+  margin: 5px;
 `
+const SelectButton = styled.button`
+  color: ${(props) => (props.selected ? props.theme.subColor : props.theme.mainColor)};
+  background-color: ${(props) => (props.selected ? props.theme.mainColor : props.theme.subTransparent)};
+  border-radius: 1rem;
+  padding: 5px;
+  width: 100px;
+  border: 1px solid ${(props) => props.theme.mainColor};
+  margin: 5px;
+`;
+
+
+const Div1 = styled.div`
+  margin-bottom: 10px;
+`
+
 
 const teamList = [
   {id: 1, name: '롯데'},
@@ -135,7 +151,15 @@ const ComparisonPage = ({ theme }) => {
   return (
     <div>
       <div>
+        <Div1>
         <h2>비교할 선수 선택</h2>
+        <SelectButton onClick={handleTypeBatter} selected={type === 'batter'}>
+          타자
+        </SelectButton>
+        <SelectButton onClick={handleTypePitcher} selected={type === 'pitcher'}>
+          투수
+        </SelectButton>
+        </Div1>
         <SelectPlayer>
           <label>선수 1: </label>
           <Styledselect1 onChange={(e) => handleTeam1Select(teamList.find((p) => p.id === Number(e.target.value)))}>
