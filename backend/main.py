@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List,Dict
+from fastapi.responses import FileResponse
 import sys, os
 from page import *
 from compare import *
@@ -91,10 +92,7 @@ async def select_pitcher(player: Player):
      
 @app.get("/play")
 async def play():
-    if(data[2] == 3):
-        data[2] %= 3
-        data[6] += 1
-        data[1] = 0
+    
 
     
     res, data[1], data[2] = hit_K_BB(ordered_player[data[0]], pitcher, data[1], data[2])
@@ -108,18 +106,18 @@ async def play():
     if(res == '홈런' or res == '2루타' or res == '2루타, 추가진루' or res == '3루타' or res == '내야안타' or res == '안타' or res == '안타, 추가진루'):
         data[4] += 1
 
-    if(data[2] == 3): 
+    if(data[2] == 3):
+        data[2] %= 3
+        data[6] += 1
         data[1] = 0
+
     print(data[0],data[1],data[2],data[3],data[4],data[5])
     print(score[data[6]])
     return {"result":res, "base":data[1],"out":data[2], "score":data[3], "hit":data[4], "BB" : data[5], "inningScore" : score}
 
 @app.get("/bunt")
 async def bunt():
-    if(data[2] == 3):
-        data[2] %= 3
-        data[6] += 1
-        data[1] = 0
+    
     
     res, data[1], data[2] = Bunt(ordered_player[data[0]], data[1], data[2])
     data[0] = (data[0] + 1) % 9
@@ -128,24 +126,31 @@ async def bunt():
     score[data[6]] += data[3] - tmp
 
     if(data[2] == 3):
+        data[2] %= 3
+        data[6] += 1
         data[1] = 0
 
     return {"result":res, "base":data[1],"out":data[2], "score":data[3], "hit":data[4], "BB" : data[5], "inningScore" : score}
 
 
-@app.post("/page")
+@app.post("/page", response_class=FileResponse)
 async def page(page : Page):
     PageData(page.page, page.sort)
-    return 1
+    file_path = "../data/response/response.csv"
+    response = FileResponse(file_path, media_type='text/csv')
+    response.headers["Content-Disposition"] = "attachment; response.csv"
+    return response
 
 @app.post("/teampage")
 async def teampage(team : Team):
     FilterTeam(team.team)
-    return 1
-
+    file_path = "../data/response/response.csv"
+    response = FileResponse(file_path, media_type='text/csv')
+    response.headers["Content-Disposition"] = "attachment; response.csv"
+    return response
 
 @app.post("/compare")
 async def compare(compare:Compare) :
-    geo1, geo2, bar1, bar2 = abilCompare(compare.type, compare.name1, compare.name2)
+    geo1, geo2, bar1, bar2 = abilCompare(compare.type, compare.player1, compare.player2)
     return {"geo1" : geo1, "geo2" : geo2, "bar1": bar1, "bar2" : bar2 }
 
