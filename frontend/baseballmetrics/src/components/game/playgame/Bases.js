@@ -19,7 +19,9 @@ const BaseSquare = styled.div`
   ${({ $isBase }) => $isBase && 'background-color: white;'}
 `;
 
-const Bases = ({ baseNumber }) => {
+//  ${(props) => props.theme.mainColor}
+
+const Bases = ({ baseNumber, theme }) => {
   // baseNumber가 null이면 기본값을 사용
   const binaryString = (baseNumber || 0).toString(2).padStart(3, '0');
 
