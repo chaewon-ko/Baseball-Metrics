@@ -14,12 +14,13 @@ def FilterTeam(team):
     filtering = all2['팀/포지션'].str.contains(team[0])
     all2 = all2[filtering]
     all2.loc[:,["팀/포지션"]] = team
+    all2.rename(columns={'팀/포지션' : '팀'}, inplace=True)
     all2 = all2.sort_values(by=['타율'], ascending=False)
-    all2 = all2[["이름","팀/포지션","타율","볼넷","삼진","병살","장타","출루","득점권타율","phLI","FO/GO", "BB/K"]]
+    all2 = all2[["이름",'팀',"타율","볼넷","삼진","병살","장타","출루","득점권타율","phLI","FO/GO", "BB/K"]]
     all2.to_csv('../data/response/response.csv', index=False)
 
 
 
 
 
-FilterTeam("두산")
+FilterTeam("KT")
