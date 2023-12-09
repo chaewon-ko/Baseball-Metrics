@@ -11,7 +11,8 @@ const StyledTableContainer = styled.div`
 
 const StyledTable = styled.table`
   border-collapse: collapse;
-  width: 100%;
+  width: 90%;
+  margin: auto;
   margin-top: 20px;
 `;
 
