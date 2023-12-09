@@ -202,11 +202,23 @@ const ComparisonPage = ({ theme }) => {
       <StyledButton onClick={handlePlayerSelect} >COMPARE</StyledButton>
       <h2>RadarGraph</h2>
       <GraphDiv>
-        <RadarGraph label1={selectedPlayer1.name} label2={selectedPlayer2.name} theme={theme} player1={player1.geo} player2={player2.geo} />
+        <RadarGraph 
+        type = {type}
+        label1={selectedPlayer1.name}
+        label2={selectedPlayer2.name}
+        theme={theme} player1={player1.geo}
+        player2={player2.geo}
+        />
       </GraphDiv>
       <h2>Bar Graph</h2>
       <GraphDiv3>
-        <BarGraph theme={theme} player1={player1.bar} player2={player2.bar} />
+        <BarGraph type={type}
+        label1={selectedPlayer1.name}
+        label2={selectedPlayer2.name}
+        theme={theme}
+        player1={player1.bar}
+        player2={player2.bar}
+        />
       </GraphDiv3>
     </div>
   );

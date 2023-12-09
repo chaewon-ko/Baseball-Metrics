@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Radar } from 'react-chartjs-2';
 import { themes } from '../../themes';
 
-const RadarGraph = ({ label1 = '선수 1', label2 = '선수 2', player1, player2, theme }) => {
+const RadarGraph = ({ type, label1 = '선수 1', label2 = '선수 2', player1, player2, theme }) => {
 	const canvasRef = useRef(null);
 
 	useEffect(() => {
@@ -11,8 +11,13 @@ const RadarGraph = ({ label1 = '선수 1', label2 = '선수 2', player1, player2
 		context.clearRect(0,0,canvas.width, canvas.height);
 	}, []);
 
+  const radarLabels = type === 'batter' ?
+    ['power', 'contact', 'batting eye', 'mental', 'speed', 'defence'] :
+    ['movement', 'ball speed', 'health', 'mental', 'command'];  // 예시, 투수일 때 사용할 라벨 목록
+
+
   const data = {
-    labels: ['power', 'contact', 'batting eye', 'mental', 'speed', 'defence'],
+    labels: radarLabels,
     datasets: [
       {
         label: label1,
