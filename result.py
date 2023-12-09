@@ -336,10 +336,10 @@ def Bunt(name, base, outcount):
     if(selector < success):
         base = base << 1
         outcount += 1
-        return 'Bunt+', base, outcount
+        return '번트성공!', base, outcount
     else:
         outcount += 1
-        return 'Buntx', base, outcount
+        return '번트실패', base, outcount
     
 
 

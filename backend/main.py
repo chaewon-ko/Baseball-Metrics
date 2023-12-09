@@ -19,8 +19,11 @@ app = FastAPI()
 ordered_player = []
 pinch_player =[]
 
-data = [0,0,0,0]
+data = [0,0,0,0,0,0,0]
 pitcher = ""
+
+score = [0,0,0,0,0,0,0,0,0]
+inning = 0;
 
 class Player(BaseModel) :
     name : str
@@ -81,29 +84,47 @@ async def select_pinch(player: Player):
 async def select_pitcher(player: Player):
     pitcher = player.name
     print(pitcher)
+    for i in range(7):
+        data[i] = 0
+    for i in range(9):
+        score[i] = 0
      
 @app.get("/play")
 async def play():
     if(data[2] == 3):
         data[2] %= 3
+        data[6] += 1
+        data[1] = 0
+
     
     res, data[1], data[2] = hit_K_BB(ordered_player[data[0]], pitcher, data[1], data[2])
     data[0] = (data[0] + 1) % 9
-
+    tmp = data[3]
     data[1], data[3] = Score(data[1],data[3])
+    score[data[6]] += data[3] - tmp
 
-    return {"result":res, "base":data[1],"out":data[2], "score":data[3]}
+    if(res == '사사구') :
+        data[5] += 1
+    if(res == '홈런' or res == '2루타' or res == '2루타, 추가진루' or res == '3루타' or res == '내야안타' or res == '안타' or res == '안타, 추가진루'):
+        data[4] += 1
+
+    print(data[0],data[1],data[2],data[3],data[4],data[5])
+    print(score[data[6]])
+    return {"result":res, "base":data[1],"out":data[2], "score":data[3], "hit":data[4], "BB" : data[5], "inningScore" : score}
 
 @app.get("/bunt")
 async def bunt():
     if(data[2] == 3):
         data[2] %= 3
+        data[6] += 1
+        data[1] = 0
     
     res, data[1], data[2] = Bunt(ordered_player[data[0]], data[1], data[2])
-
+    data[0] = (data[0] + 1) % 9
+    tmp = data[3]
     data[1], data[3] = Score(data[1],data[3])
-
-    return {"result" : res, "base":data[1], "out":data[2], "score":data[3]}
+    score[data[6]] += data[3] - tmp
+    return {"result":res, "base":data[1],"out":data[2], "score":data[3], "hit":data[4], "BB" : data[5], "inningScore" : score}
 
 
 @app.post("/page")
