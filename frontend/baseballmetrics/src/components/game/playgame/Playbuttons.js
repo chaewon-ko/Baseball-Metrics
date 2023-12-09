@@ -28,17 +28,28 @@ const Playbuttons = ({ sendData }) => {
 			.catch(function (error) {
 				console.log(error);
 			})
-			.then(function () {
-
-			});
-
 	};
+
+	const BB = e => {
+		axios.get('/bunt')
+		.then(function(response){
+			console.log(response)
+			sendData(response.data)
+		})
+		.catch(function(error){
+			console.log(error);
+		})
+	}
+	
+	const Sub = e => {
+		axios.post()
+	}
 
 	return (
 		<div>
 			<Button onClick={GG}>진행하기</Button>
-			<Button>대타</Button>
-			<Button>번트</Button>
+			<Button onClick={Sub}>대타</Button>
+			<Button onClick={BB}>번트</Button>
 		</div>
 	);
 };

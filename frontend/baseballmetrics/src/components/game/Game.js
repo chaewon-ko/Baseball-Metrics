@@ -64,7 +64,7 @@ const Game = ({theme, selectedBatters}) => {
 		// 2초 후에 결과 숨기기
 		setTimeout(() => {
 			setShowResult(false);
-		}, 1000);
+		}, 1500);
 	};
 
 	const getTipsByOuts = (outs) => {
