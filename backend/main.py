@@ -108,6 +108,8 @@ async def play():
     if(res == '홈런' or res == '2루타' or res == '2루타, 추가진루' or res == '3루타' or res == '내야안타' or res == '안타' or res == '안타, 추가진루'):
         data[4] += 1
 
+    if(data[2] == 3): 
+        data[1] = 0
     print(data[0],data[1],data[2],data[3],data[4],data[5])
     print(score[data[6]])
     return {"result":res, "base":data[1],"out":data[2], "score":data[3], "hit":data[4], "BB" : data[5], "inningScore" : score}
@@ -124,6 +126,10 @@ async def bunt():
     tmp = data[3]
     data[1], data[3] = Score(data[1],data[3])
     score[data[6]] += data[3] - tmp
+
+    if(data[2] == 3):
+        data[1] = 0
+
     return {"result":res, "base":data[1],"out":data[2], "score":data[3], "hit":data[4], "BB" : data[5], "inningScore" : score}
 
 
