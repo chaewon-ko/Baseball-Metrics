@@ -70,7 +70,14 @@ const Help = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  margin-left: 5px;`
+  margin-left: 5px;
+  color: ${(props) => props.theme.mainColor};
+  background-color: ${(props) => props.theme.subTransparent};
+  &:hover {
+    color: ${(props) => props.theme.subColor};
+    background-color: ${(props) => props.theme.mainTransparent};
+  }
+`
 const teamList = [
   {id: 1, name: '롯데'},
   {id: 2, name: '삼성'},
