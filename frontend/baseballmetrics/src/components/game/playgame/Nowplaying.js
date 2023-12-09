@@ -42,25 +42,25 @@ const Picture = styled.div`
 const Player = ({ num, team, name, highlighted }) => {
   return (
     <Playercard $highlighted={highlighted}>
-      <span>{num}</span>
-      <span>{team}</span>
+      <span>{num+' '}</span>
+      <span>{team+' '}</span>
       <span>{name}</span>
     </Playercard>
   );
 };
 
-const Nowplaying = () => {
+const Nowplaying = ({selectedBatters}) => {
   return (
     <Container>
       <Picture>
         <img src={playerImage} alt="선수 사진" />
       </Picture>
-      <Player num={1} team={"롯데"} name={"김주찬"} />
-      <Player num={2} team={"롯데"} name={"황재균"} />
-      <Player num={3} team={"롯데"} name={"강민호"} />
-      <Player num={4} team={"롯데"} name={"이대호"} />
-      <Player num={5} team={"롯데"} name={"가르시아"} />
-      <Player num={6} team={"롯데"} name={"전준우"} />
+      <Player num={1} team={""} name={selectedBatters[9].이름} />
+      <Player num={2} team={""} name={selectedBatters[10].이름} />
+      <Player num={3} team={""} name={selectedBatters[11].이름} />
+      <Player num={4} team={""} name={selectedBatters[12].이름} />
+      <Player num={5} team={""} name={selectedBatters[13].이름} />
+      <Player num={6} team={""} name={selectedBatters[14].이름} />
     </Container>
   );
 };

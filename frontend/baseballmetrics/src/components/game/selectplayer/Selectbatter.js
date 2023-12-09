@@ -50,7 +50,7 @@ const StyledButton = styled.button`
   cursor: pointer;
 `;
 
-const SelectBatter = ({ theme }) => {
+const SelectBatter = ({ theme, onSelectBatters }) => {
   const [tableData, setTableData] = useState(null);
   const [selectedBatters, setSelectedBatters] = useState([]);
 
@@ -153,7 +153,7 @@ const SelectBatter = ({ theme }) => {
           });
       }
     })
-
+    onSelectBatters(selectedBatters);
   };
 
   return (

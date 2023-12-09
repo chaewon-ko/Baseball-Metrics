@@ -49,7 +49,7 @@ const CustomHeading = styled.h3`
 // 스트라이크 카운트 볼 카운트 우리가 사용을 안하는데 어떻게 처리?
 // 데이터베이스에 연결해서 선수들 정보도 가져와야 함 -> 이전 선택 페이지에서?
 
-const Game = ({theme}) => {
+const Game = ({theme, selectedBatters}) => {
 	// 상태를 통해 데이터 관리
   const [data, setData] = useState({ result: '', base: 0, out: 0 });
   const [count, setCount] = useState(1);
@@ -75,7 +75,7 @@ const Game = ({theme}) => {
 			</GridItem1>
 			<GridItem2>
 				<GameBox2>
-					<Nowplaying />
+					<Nowplaying selectedBatters={selectedBatters}/>
 					<div>
 						<Tips theme={theme}>{showResult ? data.result : '해당 팁'}</Tips>
 						{/* header.js에서 선택한 테마 연동하는거 구현해야함 */}
@@ -85,7 +85,7 @@ const Game = ({theme}) => {
 						</BaseSBO>
 						<Playbuttons sendData={handleData} />
 					</div>
-					<Battingorder NowOrder={count} theme={theme}/>
+					<Battingorder selectedBatters={selectedBatters} NowOrder={count} theme={theme}/>
 				</GameBox2>
 			</GridItem2>
 		</GameBox>

@@ -17,10 +17,14 @@ import Ranking from './components/game/Ranking';
 function App() {
 
   const [currentTheme, setCurrentTheme] = useState('light');
+  const [selectedBatters, setSelectedBatters] = useState([])
 
   const handleTheme = (newTheme) => {
     setCurrentTheme(newTheme);
   };
+  const handleBatters = (batters) => {
+    setSelectedBatters(batters)
+  }
   
   // 테마 변경 함수
   return (
@@ -33,8 +37,8 @@ function App() {
             <Route path='/record' element={<RecordPage/>}></Route>
             <Route path='/compare' element={<ComparisonPage theme={currentTheme}/>}></Route>
             <Route path='/game' element={<Selectpitcher theme={currentTheme}/>}></Route>
-            <Route path='/game/batter' element={<Selectbatter theme={currentTheme}/>}></Route>
-            <Route path='/game/play' element={<Game theme={currentTheme}/>}></Route>
+            <Route path='/game/batter' element={<Selectbatter onSelectBatters={handleBatters} theme={currentTheme}/>}></Route>
+            <Route path='/game/play' element={<Game theme={currentTheme} selectedBatters={selectedBatters}/>}></Route>
             <Route path='/game/rank' element={<Ranking/>}></Route>
             <Route path='/explaination' element={<ExplainPage/>}></Route>
             <Route path='*' element={<NotFound/>}></Route>
