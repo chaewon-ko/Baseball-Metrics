@@ -8,7 +8,6 @@ const StyledTableContainer = styled.div`
   overflow-x: auto;
   max-width: 100%;
 `;
-
 const StyledTable = styled.table`
   border-collapse: collapse;
   width: 90%;
@@ -16,7 +15,6 @@ const StyledTable = styled.table`
   margin-top: 20px;
 
 `;
-
 const StyledTh = styled.th`
   border: 1px solid #dddddd;
   text-align: left;
@@ -25,7 +23,6 @@ const StyledTh = styled.th`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-
 // 수정된 부분: $isSelected prop 제거, 선택된 행에 배경색 적용
 const StyledTd = styled.td`
   border: 1px solid #dddddd;
@@ -38,8 +35,6 @@ const StyledTd = styled.td`
     $isSelected ? theme.subColor : 'transparent'};
   color: ${({ $isSelected }) => ($isSelected ? 'white' : 'inherit')};
 `;
-
-
 const StyledButton = styled.button`
   background-color: ${(props) => props.theme.mainColor};
   border: none;
@@ -52,8 +47,6 @@ const StyledButton = styled.button`
   margin: 4px 2px;
   cursor: pointer;
 `;
-
-
 const Selectpitcher = ({theme}) => {
   const [tableData, setTableData] = useState(null);
   const [selectedPitcher, setSelectedPitcher] = useState(null);

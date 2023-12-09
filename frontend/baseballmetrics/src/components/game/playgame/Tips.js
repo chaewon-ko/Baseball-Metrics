@@ -14,7 +14,6 @@ const Tipbox = styled.div`
   color: ${(props) => props.theme.subColor};
 `;
 
-
 const Tips = ({ children, theme }) => {
   return (
     <ThemeProvider theme={themes[theme]}>

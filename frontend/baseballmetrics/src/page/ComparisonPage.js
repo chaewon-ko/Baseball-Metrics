@@ -65,6 +65,12 @@ const SelectButton = styled.button`
 const Div1 = styled.div`
   margin-bottom: 10px;
 `
+const Help = styled.div`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-left: 5px;`
 const teamList = [
   {id: 1, name: '롯데'},
   {id: 2, name: '삼성'},
@@ -77,7 +83,7 @@ const teamList = [
   {id: 9, name: 'SSG'},
   {id: 10, name: '두산'},
 ]
-// 통신으로 받아와야할 선수들 데이터 선수 두명 + 해당 선수 구단/리그 평균(11개 데이터 이건 그냥 프론트에 박아놓을까?)
+// 구단 평균 리그 평균 구현해야 함.
 const ComparisonPage = ({ theme }) => {
   const [selectedPlayer1, setSelectedPlayer1] = useState('선수1');
   const [selectedPlayer2, setSelectedPlayer2] = useState('선수2');
@@ -90,11 +96,9 @@ const ComparisonPage = ({ theme }) => {
   const [type, setType] = useState('batter')
 
   useEffect(() => {
-    // Player 1을 위해 선택된 팀에 따라 선수 필터링
     const playersForTeam1 = filteredPlayers(selectedTeam1.id, type);
     setFilteredPlayers1(playersForTeam1);
-  
-    // Player 2을 위해 선택된 팀에 따라 선수 필터링
+
     const playersForTeam2 = filteredPlayers(selectedTeam2.id, type);
     setFilteredPlayers2(playersForTeam2);
   }, [selectedTeam1, selectedTeam2, type]);  
@@ -121,13 +125,13 @@ const ComparisonPage = ({ theme }) => {
 
       setPlayer1({
         name: selectedPlayer1.name,
-        geo: response.data.geo1.slice(1), // 첫 번째 요소 (이름)를 제거합니다.
+        geo: response.data.geo1.slice(1), 
         bar: response.data.bar1,
       });
 
       setPlayer2({
         name: selectedPlayer2.name,
-        geo: response.data.geo2.slice(1), // 첫 번째 요소 (이름)를 제거합니다.
+        geo: response.data.geo2.slice(1),
         bar: response.data.bar2,
       });
     } catch (error) {
@@ -200,7 +204,8 @@ const ComparisonPage = ({ theme }) => {
         </SelectPlayer>
       </div>
       <StyledButton onClick={handlePlayerSelect} >COMPARE</StyledButton>
-      <h2>RadarGraph</h2>
+      <h2>선수 능력치 비교</h2>
+      <Help>?</Help>
       <GraphDiv>
         <RadarGraph 
         type = {type}
@@ -210,7 +215,8 @@ const ComparisonPage = ({ theme }) => {
         player2={player2.geo}
         />
       </GraphDiv>
-      <h2>Bar Graph</h2>
+      <h2>선수 성적(지표) 비교</h2>
+      <p>해당 선수들의 2023년 기본 지표들을 비교합니다.</p>
       <GraphDiv3>
         <BarGraph type={type}
         label1={selectedPlayer1.name}

@@ -8,14 +8,12 @@ const StyledTableContainer = styled.div`
   overflow-x: auto;
   max-width: 100%;
 `;
-
 const StyledTable = styled.table`
   border-collapse: collapse;
   width: 90%;
   margin: auto;
   margin-top: 20px;
 `;
-
 const StyledTh = styled.th`
   border: 1px solid #dddddd;
   text-align: left;
@@ -24,7 +22,6 @@ const StyledTh = styled.th`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-
 const StyledTd = styled.td`
   border: 1px solid #dddddd;
   text-align: left;
@@ -36,7 +33,6 @@ const StyledTd = styled.td`
     $isSelected ? theme.subColor : 'transparent'};
   color: ${({ $isSelected }) => ($isSelected ? 'white' : 'inherit')};
 `;
-
 const StyledButton = styled.button`
   background-color: ${(props) => props.theme.mainColor};
   border: none;
@@ -49,31 +45,29 @@ const StyledButton = styled.button`
   margin: 4px 2px;
   cursor: pointer;
 `;
-
 const SelectBatter = ({ theme, onSelectBatters }) => {
   const [tableData, setTableData] = useState(null);
   const [selectedBatters, setSelectedBatters] = useState([]);
-
-  useEffect(() => {
-    fetchData('/data/battersBasic.csv');
-  }, []);
-
-  const fetchData = async (csvFilePath) => {
+  const fetchData = async (page, sort) => {
     try {
-      const response = await fetch(process.env.PUBLIC_URL + csvFilePath);
-      const csvData = await response.text();
-
+      const response = await axios.post('/page', {
+        page: page,
+        sort: sort,
+      });
+  
+      const csvData = response.data;
+  
       Papa.parse(csvData, {
         header: true,
         dynamicTyping: true,
-        complete: function (result) {
+        complete: function(result) {
           const dataWithOrder = result.data.map((row, index) => ({
             ...row,
             order: index + 1,
           }));
           setTableData(dataWithOrder);
         },
-        error: function (error) {
+        error: function(error) {
           console.error('Error parsing CSV:', error.message);
         },
       });
@@ -81,6 +75,10 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
       console.error('Error fetching CSV:', error.message);
     }
   };
+  useEffect(() => {
+    fetchData(1, '타율');
+  }, []);
+  
 
   const handleBatterSelect = (batter) => {
     const isAlreadySelected = selectedBatters.find(

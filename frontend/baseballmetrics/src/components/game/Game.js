@@ -64,7 +64,7 @@ const Game = ({theme, selectedBatters}) => {
 		// 2초 후에 결과 숨기기
 		setTimeout(() => {
 			setShowResult(false);
-		}, 2000);
+		}, 1000);
 	};
 
 	return (
@@ -80,7 +80,7 @@ const Game = ({theme, selectedBatters}) => {
 						<Tips theme={theme}>{showResult ? data.result : '해당 팁'}</Tips>
 						{/* header.js에서 선택한 테마 연동하는거 구현해야함 */}
 						<BaseSBO>
-							<Bases baseNumber={data.base} />
+							<Bases baseNumber={data.base} theme={theme}/>
 							<SBOcount outs={data.out}/>
 						</BaseSBO>
 						<Playbuttons sendData={handleData} />
