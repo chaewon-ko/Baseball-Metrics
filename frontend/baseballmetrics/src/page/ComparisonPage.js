@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RadarGraph from '../components/comparison/RadarGraph';
 import styled from 'styled-components';
 import BarGraph from '../components/comparison/BarGraph';
+import { playerList } from '../players';
 
 const GraphDiv = styled.div`
   margin: 0 auto;
@@ -21,7 +22,17 @@ const SelectPlayer = styled.div`
   display: inline-block;
   margin: 10px;
 `
-const Styledselect =  styled.select`
+const Styledselect1 =  styled.select`
+  color: ${(props) => props.theme.mainColor};
+  background-color: ${(props) => props.theme.mainTransparent};
+  width: 150px;
+  padding: 5px;
+  text-align: center;
+  border-radius: 1rem;
+  margin-right: 10px;
+
+`
+const Styledselect2 =  styled.select`
   color: ${(props) => props.theme.mainColor};
   background-color: ${(props) => props.theme.subTransparent};
   width: 150px;
@@ -31,13 +42,6 @@ const Styledselect =  styled.select`
   margin-right: 10px;
 
 `
-
-const playerList = [
-  { id: 1, name: '선수1', abilities: [80, 80, 90, 60, 30, 90] },
-  { id: 2, name: '선수2', abilities: [75, 85, 80, 75, 70, 95] },
-  { id: 3, name: '선수3', abilities: [40, 23, 55, 70, 82, 35] },
-  { id: 4, name: '선수4', abilities: [73, 28, 97, 72, 30, 21] },
-];
 
 const teamList = [
   {id: 1, name: '롯데'},
@@ -52,12 +56,23 @@ const teamList = [
   {id: 10, name: '두산'},
 ]
 // 통신으로 받아와야할 선수들 데이터 선수 두명 + 해당 선수 구단/리그 평균(11개 데이터 이건 그냥 프론트에 박아놓을까?)
-
-const ComparisonPage = ({theme}) => {
+const ComparisonPage = ({ theme }) => {
   const [selectedPlayer1, setSelectedPlayer1] = useState(playerList[0]);
   const [selectedPlayer2, setSelectedPlayer2] = useState(playerList[1]);
   const [selectedTeam1, setSelectedTeam1] = useState(teamList[0]);
   const [selectedTeam2, setSelectedTeam2] = useState(teamList[0]);
+  const [filteredPlayers1, setFilteredPlayers1] = useState([]);
+  const [filteredPlayers2, setFilteredPlayers2] = useState([]);
+
+  useEffect(() => {
+    // Player 1을 위해 선택된 팀에 따라 선수 필터링
+    const playersForTeam1 = playerList.filter(player => player.teamId === selectedTeam1.id);
+    setFilteredPlayers1(playersForTeam1);
+
+    // Player 2을 위해 선택된 팀에 따라 선수 필터링
+    const playersForTeam2 = playerList.filter(player => player.teamId === selectedTeam2.id);
+    setFilteredPlayers2(playersForTeam2);
+  }, [selectedTeam1, selectedTeam2]);
 
   const handlePlayer1Select = (player) => {
     setSelectedPlayer1(player);
@@ -68,49 +83,49 @@ const ComparisonPage = ({theme}) => {
   };
 
   const handleTeam1Select = (team) => {
-    setSelectedTeam1(team)
-  }
-  const handleTeam2Select = (team) => {
-    setSelectedTeam2(team)
-  }
+    setSelectedTeam1(team);
+  };
 
+  const handleTeam2Select = (team) => {
+    setSelectedTeam2(team);
+  };
   return (
     <div>
       <div>
-        <h2>Select Players to Compare</h2>
+        <h2>비교할 선수 선택</h2>
         <SelectPlayer>
-          <label>Player 1: </label>
-          <Styledselect onChange={(e) => handleTeam1Select(teamList.find((p) => p.id === Number(e.target.value)))}>
+          <label>선수 1: </label>
+          <Styledselect1 onChange={(e) => handleTeam1Select(teamList.find((p) => p.id === Number(e.target.value)))}>
             {teamList.map((team) => (
               <option key={team.id} value={team.id}>
                 {team.name}
               </option>
             ))}
-          </Styledselect>
-          <Styledselect onChange={(e) => handlePlayer1Select(playerList.find((p) => p.id === Number(e.target.value)))}>
-            {playerList.map((player) => (
+          </Styledselect1>
+          <Styledselect1 onChange={(e) => handlePlayer1Select(filteredPlayers1.find((p) => p.id === Number(e.target.value)))}>
+            {filteredPlayers1.map((player) => (
               <option key={player.id} value={player.id}>
                 {player.name}
               </option>
             ))}
-          </Styledselect>
+          </Styledselect1>
         </SelectPlayer>
         <SelectPlayer>
-          <label>Player 2: </label>
-          <Styledselect onChange={(e) => handleTeam2Select(teamList.find((p) => p.id === Number(e.target.value)))}>
+          <label>선수 2: </label>
+          <Styledselect2 onChange={(e) => handleTeam2Select(teamList.find((p) => p.id === Number(e.target.value)))}>
             {teamList.map((team) => (
               <option key={team.id} value={team.id}>
                 {team.name}
               </option>
             ))}
-          </Styledselect>
-          <Styledselect onChange={(e) => handlePlayer2Select(playerList.find((p) => p.id === Number(e.target.value)))}>
-            {playerList.map((player) => (
+          </Styledselect2>
+          <Styledselect2 onChange={(e) => handlePlayer2Select(filteredPlayers2.find((p) => p.id === Number(e.target.value)))}>
+            {filteredPlayers2.map((player) => (
               <option key={player.id} value={player.id}>
                 {player.name}
               </option>
             ))}
-          </Styledselect>
+          </Styledselect2>
         </SelectPlayer>
       </div>
       <h2>RadarGraph</h2>
