@@ -113,10 +113,9 @@ const Game = ({theme, selectedBatters}) => {
 					<Nowplaying selectedBatters={selectedBatters}/>
 					<div>
 						<Tips theme={theme}>{showResult ? data.result : getTipsByOuts(data.out)}</Tips>
-						{/* header.js에서 선택한 테마 연동하는거 구현해야함 */}
 						<BaseSBO>
-							<Bases baseNumber={data.base} theme={theme}/>
-							<SBOcount outs={data.out}/>
+							<Bases baseNumber={data.base} theme={theme} />
+							<SBOcount outs={data.out} />
 						</BaseSBO>
 						<Playbuttons sendData={handleData} />
 					</div>
