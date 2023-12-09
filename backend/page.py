@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-all = pd.read_csv('./data/battersAll.csv')
+all = pd.read_csv('./data/battersGame.csv')
 
 def PageData(i,sort):
     all2 = all.sort_values(by=[sort], ascending=False)[(i-1)*30:i*30]
@@ -18,6 +18,6 @@ def FilterTeam(team):
     all2.to_csv('../data/response/response.csv', index=False)
 
 
-PageData(1,'타율')
+
 
 
