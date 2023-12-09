@@ -48,6 +48,7 @@ const StyledButton = styled.button`
 const SelectBatter = ({ theme, onSelectBatters }) => {
   const [tableData, setTableData] = useState(null);
   const [selectedBatters, setSelectedBatters] = useState([]);
+  
   const fetchData = async (page, sort) => {
     try {
       const response = await axios.post('/page', {
@@ -60,21 +61,29 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
       Papa.parse(csvData, {
         header: true,
         dynamicTyping: true,
-        complete: function(result) {
-          const dataWithOrder = result.data.map((row, index) => ({
-            ...row,
-            order: index + 1,
-          }));
-          setTableData(dataWithOrder);
+        complete: function (result) {
+          // 제거할 빈 줄이 있는 경우에만 필터링
+          const dataWithoutEmptyRows = result.data.filter(row => Object.values(row).some(value => (value || '').toString().trim() !== ''));
+      
+          // 마지막 행이 빈 줄인 경우 제거
+          if (dataWithoutEmptyRows.length > 0) {
+            const lastRow = dataWithoutEmptyRows[dataWithoutEmptyRows.length - 1];
+            if (Object.values(lastRow).every(value => (value || '').toString().trim() === '')) {
+              dataWithoutEmptyRows.pop();
+            }
+          }
+      
+          setTableData(dataWithoutEmptyRows);
         },
-        error: function(error) {
+        error: function (error) {
           console.error('Error parsing CSV:', error.message);
         },
-      });
+      });           
     } catch (error) {
       console.error('Error fetching CSV:', error.message);
     }
   };
+  
   useEffect(() => {
     fetchData(1, '타율');
   }, []);
