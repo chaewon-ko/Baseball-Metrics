@@ -32,7 +32,7 @@ const Styledselect1 =  styled.select`
   text-align: center;
   border-radius: 1rem;
   margin-right: 10px;
-
+  border: 1px solid ${(props) => props.theme.mainColor};
 `
 const Styledselect2 =  styled.select`
   color: ${(props) => props.theme.mainColor};
@@ -42,7 +42,15 @@ const Styledselect2 =  styled.select`
   text-align: center;
   border-radius: 1rem;
   margin-right: 10px;
-
+  border: 1px solid ${(props) => props.theme.mainColor};
+`
+const StyledButton = styled.button`
+  color: ${(props) => props.theme.mainColor};
+  background-color: ${(props) => props.theme.subTransparent};
+  border-radius: 1rem;
+  padding: 5px;
+  width: 100px;
+  border: 1px solid ${(props) => props.theme.mainColor};
 `
 
 const teamList = [
@@ -67,6 +75,7 @@ const ComparisonPage = ({ theme }) => {
   const [filteredPlayers2, setFilteredPlayers2] = useState([]);
   const [player1, setPlayer1] = useState({ name: '', geo: [], bar: [] });
   const [player2, setPlayer2] = useState({ name: '', geo: [], bar: [] });
+  const [type, setType] = useState('batter')
 
   useEffect(() => {
     // Player 1을 위해 선택된 팀에 따라 선수 필터링
@@ -79,11 +88,17 @@ const ComparisonPage = ({ theme }) => {
   }, [selectedTeam1, selectedTeam2]);
 
   const filteredPlayers = (teamId) => playerList.filter(player => player.teamId === teamId);
+  const handleTypePitcher = () =>{
+    setType('pitcher')
+  }
+  const handleTypeBatter = () =>{
+    setType('batter')
+  }
 
   const handlePlayerSelect = async () => {
     try {
       const response = await axios.post('/compare', {
-        "type": 'batter',
+        "type": type,
         "player1": selectedPlayer1.name,
         "player2": selectedPlayer2.name,
       });
@@ -160,7 +175,7 @@ const ComparisonPage = ({ theme }) => {
           </Styledselect2>
         </SelectPlayer>
       </div>
-      <button onClick={handlePlayerSelect} >COMPARE</button>
+      <StyledButton onClick={handlePlayerSelect} >COMPARE</StyledButton>
       <h2>RadarGraph</h2>
       <GraphDiv>
         <RadarGraph theme={theme} player1={player1.geo} player2={player2.geo} />
