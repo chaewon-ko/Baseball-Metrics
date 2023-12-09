@@ -63,13 +63,13 @@ const Game = ({theme}) => {
 		<GameBox>
 			<GridItem1>
 				<CustomHeading>게임이 진행 중입니다.</CustomHeading>
-				<Inning />
+				<Inning iscore={data.inningScore} run={data.score} hit={data.hit} bb={data.BB}/>
 			</GridItem1>
 			<GridItem2>
 				<GameBox2>
 					<Nowplaying />
 					<div>
-						<Tips theme={theme}>현재 게임 이닝, 스트라이크/볼/아웃 카운트에 적합한 게임 팁을 출력</Tips>
+						<Tips theme={theme}>{data.result}</Tips>
 						{/* header.js에서 선택한 테마 연동하는거 구현해야함 */}
 						<BaseSBO>
 							<Bases baseNumber={data.base} />

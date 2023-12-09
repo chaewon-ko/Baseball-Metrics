@@ -36,10 +36,10 @@ const Bot9 = styled.div`
   border-left: 1px solid white;
 `;
 
-const Inning = () => {
+const Inning = ({ iscore = [0,0,0,0,0,0,0,0,0], run = 0, hit = 0, bb = 0 }) => {
   const inning = [1, 2, 3, 4, 5, 6, 7, 8, 9, "R", "H", "B"];
 	// 나중에 데이터 받아와서 이용하기!
-  const botData = [1, 0, 0, 2, 3, 2, 0, 0, 2, 2, 12, 5];
+  const botData = [...iscore, run, hit, bb]
 
   return (
     <GridContainer>
