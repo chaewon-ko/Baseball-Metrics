@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import SelectBatter from '../selectplayer/Selectbatter';
 
 const Button = styled.button`
 	color: white;
@@ -42,7 +43,10 @@ const Playbuttons = ({ sendData }) => {
 	}
 	
 	const Sub = e => {
-		axios.post()
+		axios.post('/change',{
+			name1: 'ddd',
+			name2: 'ddd'
+		})
 	}
 
 	return (
