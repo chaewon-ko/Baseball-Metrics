@@ -67,17 +67,44 @@ const Div1 = styled.div`
 `
 const Help = styled.div`
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   margin-left: 5px;
   color: ${(props) => props.theme.mainColor};
   background-color: ${(props) => props.theme.subTransparent};
+  position: relative;
+  font-size: 16pt;
+
   &:hover {
     color: ${(props) => props.theme.subColor};
     background-color: ${(props) => props.theme.mainTransparent};
+
+    & > article {
+      display: block;
+      position: absolute;
+      width: 400px;
+      background-color: ${(props) => props.theme.subTransparent};
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      font-size: 10pt;
+
+      /* 텍스트 세로 가운데 정렬 스타일 추가 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
   }
-`
+
+  & > article {
+    display: none;
+  }
+`;
+
+
 const teamList = [
   {id: 1, name: '롯데'},
   {id: 2, name: '삼성'},
@@ -92,6 +119,7 @@ const teamList = [
 ]
 // 구단 평균 리그 평균 구현해야 함.
 const ComparisonPage = ({ theme }) => {
+  const [showArticle, setShowArticle] = useState(false);
   const [selectedPlayer1, setSelectedPlayer1] = useState('선수1');
   const [selectedPlayer2, setSelectedPlayer2] = useState('선수2');
   const [selectedTeam1, setSelectedTeam1] = useState(teamList[0]);
@@ -212,7 +240,34 @@ const ComparisonPage = ({ theme }) => {
       </div>
       <StyledButton onClick={handlePlayerSelect} >COMPARE</StyledButton>
       <h2>선수 능력치 비교</h2>
-      <Help>?</Help>
+      <Help
+        onMouseEnter={() => setShowArticle(true)}
+        onMouseLeave={() => setShowArticle(false)}
+      >
+        ?
+        {showArticle && (
+          <article style={{ display: 'inline-block', marginLeft: '5px' }}>
+            {type === 'batter' ? (
+              <>
+                <p>파워: 공을 얼마나 멀리 보낼 수 있는지</p>
+                <p>컨택: 공을 얼마나 정확히 배트에 맞출 수 있는지</p>
+                <p>선구안: 타석에서 볼과 스트라이크를 얼마나 잘 구별해낼 수 있는지</p>
+                <p>속도: 베이스에서 베이스로 얼마나 빠르게 갈 수 있는지</p>
+                <p>수비: 수비 상황에서 얼마나 안정감 있게 타구를 처리하는지</p>
+                <p>멘탈: 중요 상황에 일관성 있는 혹은 더 강한 면모를 보이는지</p>
+              </>
+            ) : type === 'pitcher' ? (
+              <>
+                <p>구속: 공을 얼마나 빠르게 던질 수 있는지</p>
+                <p>제구: 원하는 위치에 정확하게 공을 던지는 능력</p>
+                <p>구위: 볼끝이 좋아 공이 배트에 맞아도 멀리 뻗어나가지 못하게 하는 능력</p>
+                <p>체력: 한 경기에 공을 얼마나 많이 던질 수 있는지</p>
+                <p>멘탈: 중요 상황에 일관성 있는 혹은 더 강한 면모를 보이는지</p>
+              </>
+            ) : null}
+          </article>
+        )}
+      </Help>
       <GraphDiv>
         <RadarGraph 
         type = {type}
