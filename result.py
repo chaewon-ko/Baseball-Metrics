@@ -148,14 +148,14 @@ def outfieldFO(name, base, outcount):
     if(selector <= playerOutfieldCourse):
         course = 1
     
-    result = '외야뜬공,진루'
+    result = '외야뜬공'
     
     if(base & 4  == 4):
         base += 4
-        result += '3루->홈'
+        result += ',진루 3루->홈'
     if((base & 2 == 2) and (course)):
         base += 2
-        result += '2루->3루'
+        result += ',진루 2루->3루'
         
     return result, base, outcount
     
@@ -212,7 +212,7 @@ def outfieldHit(name,pitcher, base,outcount):
     
     
     if(selector <= int(player1BRatio)):
-        if(course == 1):
+        if(selector3 <= int(playerHitplus) and (base)):
             base = base << 2
             base += 1
             return '안타, 추가진루', base, outcount
@@ -222,7 +222,7 @@ def outfieldHit(name,pitcher, base,outcount):
             return '안타', base, outcount
         
     elif(selector <= int(player1BRatio + player2BRatio)):
-        if(selector3 <= int(playerHitplus)):
+        if(selector3 <= int(playerHitplus) and (base)):
             base = base << 3
             base += 2
             return '2루타, 추가진루', base, outcount
@@ -256,6 +256,7 @@ def infield(name,base,outcount) :
     selector = r.randrange(1,1001)
     
     if(selector <= playerInfieldFORatio):
+        outcount += 1
         return '내야뜬공', base,outcount
     else:
         return groundBall(name,base,outcount,playerInfieldGround)
@@ -332,7 +333,7 @@ def groundBall(name,base,outcount,playerInfieldGround):
 
 def Bunt(name, base, outcount):
     success = 850
-    selector = r.range(1,1001)
+    selector = r.randrange(1,1001)
     if(selector < success):
         base = base << 1
         outcount += 1
