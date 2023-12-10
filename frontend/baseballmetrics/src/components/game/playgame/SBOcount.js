@@ -16,7 +16,7 @@ const Styledstrong = styled.strong`
 	text-align: left;
 `
 
-const SBOCount = ({ outs }) => {
+const SBOCount = ({ outs , IP}) => {
 
   
   const balls = 3;
@@ -29,6 +29,7 @@ const SBOCount = ({ outs }) => {
 
   return (
     <div>
+      <h3>{IP}회</h3>
       <Styledstrong>
         B
         {[...Array(balls)].map((_, index) => (

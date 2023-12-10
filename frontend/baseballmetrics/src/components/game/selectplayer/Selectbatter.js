@@ -15,6 +15,45 @@ const StyledTable = styled.table`
   margin: auto;
   margin-top: 20px;
 `;
+const Help = styled.div`
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-left: 5px;
+  color: ${(props) => props.theme.mainColor};
+  background-color: ${(props) => props.theme.subTransparent};
+  position: relative;
+  font-size: 16pt;
+
+  &:hover {
+    color: ${(props) => props.theme.subColor};
+    background-color: ${(props) => props.theme.mainTransparent};
+
+    & > article {
+      display: block;
+      position: absolute;
+      width: 400px;
+      background-color: ${(props) => props.theme.mainColor};
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      font-size: 10pt;
+
+      /* 텍스트 세로 가운데 정렬 스타일 추가 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  }
+
+  & > article {
+    display: none;
+  }
+`;
+
 
 const StyledTh = styled.th`
   border: 1px solid #dddddd;
@@ -27,7 +66,7 @@ const StyledTh = styled.th`
   text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
   background-color: ${({ active, theme }) =>
     active ? theme.subTransparent : 'transparent'};
-`;
+`
 
 const StyledTd = styled.td`
   border: 1px solid #dddddd;
@@ -66,24 +105,15 @@ const PageNumber = styled.span`
   text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
 `;
 
-const teamList = [
-  'LG',
-  'KT',
-  'NC',
-  '두산',
-  'SSG',
-  'KIA',
-  '롯데',
-  '삼성',
-  '한화',
-  '키움',
-];
+
+const teamList = ['LG', 'KT', 'NC', '두산', 'SSG', 'KIA', '롯데', '삼성', '한화', '키움'];
 
 const SelectBatter = ({ theme, onSelectBatters }) => {
   const [tableData, setTableData] = useState(null);
   const [selectedBatters, setSelectedBatters] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState(null);
+  const [showArticle, setShowArticle] = useState(false);
 
   const fetchData = async (page, sort) => {
     try {
@@ -261,31 +291,54 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
     <div>
       {tableData ? (
         <>
-          <h2>Select the batters you want to compete against</h2>
+          <h2>Decide your line-up</h2>
+          <p>select 15players and click SELECT button.</p>
+          <Help
+            onMouseEnter={() => setShowArticle(true)}
+            onMouseLeave={() => setShowArticle(false)}
+          >
+            ?
+            {showArticle && (
+              <article style={{ display: 'inline-block', marginLeft: '5px' }}>
+                  <>
+                    <p>출루율이 높은 선수: 타석에서 아웃을 추가하지 않고 진루할 확률이 높은 선수</p>
+                    <p>장타율이 높은 선수: 타석에서 2루타 이상의 장타를 추가할 확률이 높음</p>
+                    <p>BB/K가 높은 선수: 삼진을 잘 당하지 않는다</p>
+                    <p>타율과 득점권타율: 보통 혹은 해당 상황에 안타를 만들어낼 확률</p>
+                    <p>FO/GO: 뜬공/땅볼비율, 낮을수록 땅볼이 유도되어 병살 확률 등이 증가</p>
+                    <br/>
+                    <p>여러 지표를 동시에 비교하여 좋은 타자를 선택하세요.</p>
+                  </>
+              </article>
+            )}
+          </Help>
+          <p>Now selected: </p>
           {selectedBatters.length > 0 && (
             <div>
-              <p>Now Selected:</p>
-              <ol>
+              <ul>
                 {selectedBatters.map((selectedBatter, index) => (
                   <li key={index}>
+                    {index < 9 ? `${index + 1}번타자:` : '교체선수:'}
                     {selectedBatter.이름}
                     <StyledButton
                       onClick={() => changeOrder('up', index)}
                       disabled={index === 0}
                     >
-                      Up
+                      UP
                     </StyledButton>
                     <StyledButton
                       onClick={() => changeOrder('down', index)}
                       disabled={index === selectedBatters.length - 1}
                     >
-                      Down
+                      DOWN
                     </StyledButton>
                   </li>
                 ))}
-              </ol>
+              </ul>
               <Link to="/game/play">
-                <StyledButton onClick={handleSelect}>Select</StyledButton>
+                <StyledButton onClick={handleSelect} disabled={selectedBatters.length < 15}>
+                  SELECT
+                </StyledButton>
               </Link>
             </div>
           )}
@@ -317,7 +370,7 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
                   <tr key={rowIndex}>
                     <StyledTd $isSelected={selectedBatters.includes(row)}>
                       <StyledButton onClick={() => handleBatterSelect(row)}>
-                        Select
+                        선택
                       </StyledButton>
                     </StyledTd>
                     {Object.values(row).map((value, columnIndex) => (
@@ -347,7 +400,7 @@ const SelectBatter = ({ theme, onSelectBatters }) => {
           </Pagination>
         </>
       ) : (
-        <p>Loading data...</p>
+        <p>데이터를 불러오는 중입니다...</p>
       )}
     </div>
   );
