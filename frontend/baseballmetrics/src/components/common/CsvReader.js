@@ -7,59 +7,57 @@ import Papa from 'papaparse';
 // 원하는 지표들만 골라서 만드는 건 백엔드랑 통신을 해서 .csv받긴 해야할듯 => 이건 프론트에서 구현불가(?)인듯
 
 const TableContainer = styled.div`
-  margin: 20px;
-  overflow-x: auto;
+  margin: 0 90px;
+  overflow-y: auto;
+  max-height: 565px;
 `;
 
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  max-height: 400px;
   overflow-y: auto;
   white-space: nowrap;
 `;
 
 const TableHeader = styled.th`
-  background-color: #3498db;
-  color: #fff;
+  background-color: ${(props) => props.theme.subTransparent};
+  color: black;
   padding: 10px;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
   position: relative;
   overflow: visible;
 
   &:hover {
-    background-color: #2980b9;
+    background-color: ${(props) => props.theme.mainColor};
+    color: #fff;
   }
 
   .tooltip {
     display: none; 
     width: auto;
-    background-color: #34495e;
+    background-color: ${(props) => props.theme.mainColor};
     color: #fff;
+    font-weight: 500;
     text-align: center;
     border-radius: 6px;
-    padding: 5px;
+    padding: 5px 10px;
     position: absolute;
     z-index: 1;
-    top: -100%;
+    bottom: -100%;
     left: 50%;
     margin-left: -50%;
     opacity: 0;
     transition: opacity 0.3s;
-    transform: translateY(-100%);
+    transform: translateY(-10px);
   }
 
   &:hover .tooltip {
     display: block; 
     opacity: 1;
-    top: -100%;
-    transform: translateY(-100%);
+    transform: translateY(0);
   }
 `;
-
-
 
 const TableData = styled.td`
   border: 1px solid #ddd;
@@ -67,18 +65,63 @@ const TableData = styled.td`
 `;
 
 const ButtonContainer = styled.div`
-  margin-bottom: 10px;
+  margin-left:90px;
+  text-align: left;
 `;
 
 const Button = styled.button`
   margin-right: 10px;
   padding: 8px;
   cursor: pointer;
+  text-align: left;
+  border: none;
+  color: ${(props) => (props.clicked ? '#22222' : 'inherit')}; 
+  font-weight: ${(props) => (props.clicked ? 'bold' : 'normal')};
+  transition: background-color 0.3s, color 0.3s;
+  background-color: transparent;
+
+  &:active {
+    background-color: #e0e0e0;
+  }
+`;
+
+const BPSelectBtn = styled.button`
+  display: inline-flex;
+  padding: 5px 14px;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--main, #002063);
+  background: #FFF;
+  cursor: pointer;
+  margin-right: 5px;
+`;
+
+const TeamSelectorWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-left:90px;
+  margin-top: 50px;
+  margin-bottom: 10px;
+`;
+
+const TeamSelector = styled.select`
+  display: inline-flex;
+  padding: 5px 16px;
+  text-align: left;
+  align-items: center;
+  gap: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke, #D8D8D8);
+  cursor: pointer;
+  margin-right: 20px;
 `;
 
 function CsvReader() {
   const [tableData, setTableData] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+  const [clickedButton, setClickedButton] = useState(null);
 
   useEffect(() => {
     fetchData('/data/battersBasic.csv'); // 초기파일
@@ -129,16 +172,56 @@ function CsvReader() {
 
   const handleButtonClick = (csvFilePath) => {
     fetchData(csvFilePath);
+    setClickedButton(csvFilePath);
   };
 
   return (
     <div>
+      <TeamSelectorWrapper>
+        <TeamSelector>
+          <option value="/data/battersBasic.csv">전체 팀</option>
+          <option value="/data/battersExp.csv">LG</option>
+          <option value="/data/battersExp.csv">KT</option>
+          <option value="/data/battersExp.csv">SSG</option>
+          <option value="/data/battersExp.csv">NC</option>
+          <option value="/data/battersExp.csv">두산</option>
+          <option value="/data/battersExp.csv">KIA</option>
+          <option value="/data/battersExp.csv">롯데</option>
+          <option value="/data/battersExp.csv">삼성</option>
+          <option value="/data/battersExp.csv">한화</option>
+          <option value="/data/battersExp.csv">키움</option>
+        </TeamSelector>
+        <BPSelectBtn>
+          타자
+        </BPSelectBtn>
+        <BPSelectBtn>
+          투수
+        </BPSelectBtn>
+      </TeamSelectorWrapper>
       <ButtonContainer>
-        <Button onClick={() => handleButtonClick('/data/battersBasic.csv')}>
-          Basic
+        <Button onClick={() => handleButtonClick('/data/battersBasic.csv')} clicked={clickedButton === '/data/battersBasic.csv'}>
+          기본
         </Button>
-        <Button onClick={() => handleButtonClick('/data/battersClutch.csv')}>
-          Clutch
+        <Button onClick={() => handleButtonClick('/data/battersExp.csv')} clicked={clickedButton === '/data/battersExp.csv'}>
+          확장
+        </Button>
+        <Button onClick={() => handleButtonClick('/data/battersClutch.csv')} clicked={clickedButton === '/data/battersClutch.csv'}>
+          클러치
+        </Button>
+        <Button onClick={() => handleButtonClick('/data/battersHit1.csv')} clicked={clickedButton === '/data/battersHit1.csv'}>
+          타구1
+        </Button>
+        <Button onClick={() => handleButtonClick('/data/battersHit2.csv')} clicked={clickedButton === '/data/battersHit2.csv'}>
+          타구2
+        </Button>
+        <Button onClick={() => handleButtonClick('/data/battersTeambat1.csv')} clicked={clickedButton === '/data/battersTeambat1.csv'}>
+          팀배팅1
+        </Button>
+        <Button onClick={() => handleButtonClick('data/battersSteal.csv')} clicked={clickedButton === '/data/battersSteal.csv'}>
+          도루
+        </Button>
+        <Button onClick={() => handleButtonClick('data/battersRun.csv')} clicked={clickedButton === '/data/battersRun.csv'}>
+          주루
         </Button>
       </ButtonContainer>
       <TableContainer>
@@ -168,6 +251,7 @@ function CsvReader() {
       </TableContainer>
     </div>
   );
+
 }
 
 export default CsvReader;

@@ -21,7 +21,7 @@ const StyledLink = styled(Link)`
 `
 const Links = styled.div`
 	position: fixed;
-	top: 630px;
+	top: 650px;
 	left: 72px;
 `
 

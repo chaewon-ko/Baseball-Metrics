@@ -6,7 +6,8 @@ import { themes } from './themes';
 const StyledDiv = styled.div`
   background-color: ${(props) => props.theme.mainColor};
   color: ${(props) => props.theme.subColor};
-  height: 50px;
+  height: 80px;
+  font-size:20px;
 	display: grid;
 	grid-template-columns: repeat(6,1fr);
 	align-items: center;
@@ -15,7 +16,7 @@ const StyledDiv = styled.div`
 
 const StyledLink = styled(Link)`
   margin-right: 10px;
-  color: ${(props) => props.theme.subColor};
+  color: #fff;
 	text-decoration: none;
 `;
 
@@ -42,7 +43,7 @@ const Header = ({onThemeChange}) => {
         <StyledLink to="/record">Record</StyledLink>
         <StyledLink to="/game">Game</StyledLink>
         <StyledLink to="/compare">Comparison</StyledLink>
-        <StyledLink to="/explaination">Indicator Explanation</StyledLink>
+        <StyledLink to="/explaination"> </StyledLink>
         <ThemeSelector value={currentTheme} onChange={(e) => changeTheme(e.target.value)}>
           {Object.keys(themes).map((theme) => (
             <option key={theme} value={theme}>
